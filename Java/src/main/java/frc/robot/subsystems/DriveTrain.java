@@ -28,8 +28,8 @@ public class DriveTrain extends Subsystem {
 
   private DifferentialDrive drive = new DifferentialDrive(leftMotor, rightMotor);
 
-  //private Encoder rightEnc = new Encoder();
-  //private Encoder leftEnc = new Encoder();
+  private Encoder rightEnc = new Encoder(RobotMap.rightEncA, RobotMap.rightEncB, false, Encoder.EncodingType.k1X);
+  private Encoder leftEnc = new Encoder(RobotMap.leftEncA, RobotMap.leftEncB, false, Encoder.EncodingType.k1X);
 
   private boolean squaredInputs = false; //Provides finer control at lower inputs of joystick by squaring value and reapplying sign
 
@@ -48,7 +48,24 @@ public class DriveTrain extends Subsystem {
 
   public void setDeadband(double band) {
 		drive.setDeadband(band);
-	}
+  }
+  
+  //Provides raw encoder value NOT IN INCHES
+  public double[] getEncoders(){
+    double[] enc = {rightEnc.get(), leftEnc.get()};
+    return enc;
+  }
+
+  //Provides encoder value IN INCHES
+  public double[] getEncoderDist(){
+    double[] enc = {rightEnc.getDistance(), leftEnc.getDistance()};
+    return enc;
+  }
+
+  public void resetEncoders(){
+    rightEnc.reset();
+    leftEnc.reset();
+  }
 
   //Provides for one singular drivetrain across all files
   private static DriveTrain instance;

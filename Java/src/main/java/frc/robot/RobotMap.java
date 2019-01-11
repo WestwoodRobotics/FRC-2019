@@ -24,6 +24,14 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
-  public static int leftTalonPort = 0;
-  public static int rightTalonPort = 0;
+  public static final double deadbandLimit = 0.05;
+  public static final double driveTimeSpeed = 0.4;
+
+  public static final int leftTalonPort = 0,
+                          rightTalonPort = 0;
+
+  public static final int rightEncA = 0,
+                          leftEncA = 0,
+                          rightEncB = 0,
+                          leftEncB = 0;
 }
