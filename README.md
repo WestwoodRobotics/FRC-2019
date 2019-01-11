@@ -8,5 +8,3 @@ This code was used to run the robot, the driverstation dashboard, and the arcade
 ## The Driver Station
 
 
-## The Arcade
-
