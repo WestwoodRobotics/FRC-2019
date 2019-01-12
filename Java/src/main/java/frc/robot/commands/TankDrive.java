@@ -49,7 +49,7 @@ public class TankDrive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    dt_s.driveWheels(0, 0);
+    dt_s.stopWheels();
     dt_s.setSquaredInputs(false);
   }
 

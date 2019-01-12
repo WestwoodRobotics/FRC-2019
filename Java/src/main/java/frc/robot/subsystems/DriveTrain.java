@@ -42,6 +42,14 @@ public class DriveTrain extends Subsystem {
     drive.tankDrive(leftSpd, rightSpd, this.squaredInputs);
   }
 
+  public void turnRate(double rt){
+    drive.curvatureDrive(0, rt, true);
+  }
+
+  public void stopWheels(){
+    this.driveWheels(0, 0);
+  }
+
   public void setSquaredInputs(boolean squaredInputs){
     this.squaredInputs = squaredInputs;
   }
@@ -65,6 +73,14 @@ public class DriveTrain extends Subsystem {
   public void resetEncoders(){
     rightEnc.reset();
     leftEnc.reset();
+  }
+
+  public double getZHeading(){
+    return 0.0;
+  }
+
+  public void resetIMU(){
+    
   }
 
   //Provides for one singular drivetrain across all files

@@ -7,44 +7,75 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
 
-public class DriveTime extends Command {
+public class TurnTo extends Command {
+  
+  public DriveTrain dt_s = DriveTrain.getInstance();
 
-  private DriveTrain dt_s = DriveTrain.getInstance();
+  public static final double P = 0,
+                             I = 0,
+                             D = 0,
+                             absoluteTolerance = 0;
+    
+  private PIDController pid;
 
-  public DriveTime(double time) {
+  public TurnTo(double degrees) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(dt_s);
+    pid = new PIDController(P, I, D, new PIDSource(){
+      PIDSourceType m_sourceType = PIDSourceType.kDisplacement;
 
-    setInterruptible(true);
-    setTimeout(time);
+      @Override
+      public void setPIDSourceType(PIDSourceType pidSource) {
+        m_sourceType = pidSource;
+      }
+    
+      @Override
+      public double pidGet() {
+        return dt_s.getZHeading();
+      }
+    
+      @Override
+      public PIDSourceType getPIDSourceType() {
+        return m_sourceType;
+      }
+    }, d -> dt_s.turnRate(d));
+
+    pid.setInputRange(-720, 720);
+    pid.setOutputRange(-0.5, 0.5);
+    pid.setAbsoluteTolerance(absoluteTolerance);
+    pid.setSetpoint(degrees);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    dt_s.resetEncoders();
+    dt_s.resetIMU();		// reset gyros
+    pid.reset();
+    pid.enable();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    dt_s.driveWheels(RobotMap.driveTimeSpeed, RobotMap.driveTimeSpeed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isTimedOut();
+    return pid.onTarget();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    pid.disable();
     dt_s.stopWheels();
   }
 
@@ -52,6 +83,7 @@ public class DriveTime extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    pid.disable();
     dt_s.stopWheels();
   }
 }
