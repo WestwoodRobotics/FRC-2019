@@ -27,8 +27,10 @@ public class RobotMap {
   public static final double deadbandLimit = 0.05;
   public static final double driveTimeSpeed = 0.4;
 
-  public static final int leftTalonPort = 0,
-                          rightTalonPort = 0;
+  public static final int leftTalon1Port = 0,
+                          leftTalon2Port = 1,
+                          rightTalon1Port = 2,
+                          rightTalon2Port = 3;
 
   public static final int rightEncA = 0,
                           leftEncA = 0,

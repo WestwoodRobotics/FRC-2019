@@ -7,12 +7,13 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.*;
 import edu.wpi.first.wpilibj.Encoder;
-
+import edu.wpi.first.wpilibj.Spark;
 import frc.robot.RobotMap;
 import frc.robot.commands.TankDrive;
 
@@ -23,15 +24,35 @@ public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private WPI_TalonSRX leftMotor = new WPI_TalonSRX(RobotMap.leftTalonPort);
-  private WPI_TalonSRX rightMotor = new WPI_TalonSRX(RobotMap.rightTalonPort);
+  public static final double ramp = 0.1;
 
-  private DifferentialDrive drive = new DifferentialDrive(leftMotor, rightMotor);
+  private Spark leftMaster = new Spark(RobotMap.leftTalon1Port),
+                       left2 = new Spark(RobotMap.leftTalon2Port),
+                       rightMaster = new Spark(RobotMap.rightTalon1Port),
+                       right2 = new Spark(RobotMap.rightTalon2Port);
+
+  private DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
 
   private Encoder rightEnc = new Encoder(RobotMap.rightEncA, RobotMap.rightEncB, false, Encoder.EncodingType.k1X);
   private Encoder leftEnc = new Encoder(RobotMap.leftEncA, RobotMap.leftEncB, false, Encoder.EncodingType.k1X);
 
   private boolean squaredInputs = false; //Provides finer control at lower inputs of joystick by squaring value and reapplying sign
+
+  public DriveTrain(){
+    //left2.set(ControlMode.Follower, RobotMap.leftTalon1Port);
+    //right2.set(ControlMode.Follower, RobotMap.rightTalon1Port);
+
+    //leftMaster.configOpenloopRamp(ramp, 25);
+    //left2.configOpenloopRamp(ramp, 25);
+    
+    //rightMaster.configOpenloopRamp(ramp, 25);
+    //right2.configOpenloopRamp(ramp, 25);
+
+    rightEnc.reset();
+    leftEnc.reset();
+    
+    setDeadband(0.05);
+  }
 
   @Override
   public void initDefaultCommand(){

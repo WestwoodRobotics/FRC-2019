@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", new ExampleAuto());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-
+    DriveTrain.getInstance();
     OI.getInstance();
   }
 
@@ -119,7 +119,7 @@ public class Robot extends TimedRobot {
     }
 
     DriveTrain.getInstance().setDeadband(RobotMap.deadbandLimit);
-
+    
     CameraServer.getInstance().startAutomaticCapture();
   }
 
