@@ -12,8 +12,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.*;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.SPI.Port;
 import frc.robot.RobotMap;
 import frc.robot.commands.TankDrive;
 
@@ -31,12 +35,17 @@ public class DriveTrain extends Subsystem {
                        rightMaster = new Spark(RobotMap.rightTalon1Port),
                        right2 = new Spark(RobotMap.rightTalon2Port);
 
-  private DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
+  private SpeedControllerGroup gR = new SpeedControllerGroup(rightMaster, right2);
+  private SpeedControllerGroup gL = new SpeedControllerGroup(leftMaster, left2);
+
+  private DifferentialDrive drive = new DifferentialDrive(gR, gL);
 
   private Encoder rightEnc = new Encoder(RobotMap.rightEncA, RobotMap.rightEncB, false, Encoder.EncodingType.k1X);
   private Encoder leftEnc = new Encoder(RobotMap.leftEncA, RobotMap.leftEncB, false, Encoder.EncodingType.k1X);
 
   private boolean squaredInputs = false; //Provides finer control at lower inputs of joystick by squaring value and reapplying sign
+
+  private ADXRS450_Gyro gyro = new ADXRS450_Gyro(Port.kOnboardCS0);
 
   public DriveTrain(){
     //left2.set(ControlMode.Follower, RobotMap.leftTalon1Port);
@@ -51,7 +60,7 @@ public class DriveTrain extends Subsystem {
     rightEnc.reset();
     leftEnc.reset();
     
-    setDeadband(0.05);
+    //setDeadband(0.05);
   }
 
   @Override
@@ -96,12 +105,12 @@ public class DriveTrain extends Subsystem {
     leftEnc.reset();
   }
 
-  public double getZHeading(){
-    return 0.0;
+  public double getAngle(){
+    return gyro.getAngle();
   }
 
-  public void resetIMU(){
-    
+  public void resetGyro(){
+    gyro.reset();
   }
 
   //Provides for one singular drivetrain across all files

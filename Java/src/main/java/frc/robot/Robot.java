@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", new ExampleAuto());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+    
     DriveTrain.getInstance();
     OI.getInstance();
   }
@@ -54,8 +55,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Left Joystick", OI.getInstance().getLJoyY());
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
+    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getAngle());
   }
 
   /**

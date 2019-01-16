@@ -32,8 +32,8 @@ public class RobotMap {
                           rightTalon1Port = 2,
                           rightTalon2Port = 3;
 
-  public static final int rightEncA = 0,
-                          leftEncA = 0,
-                          rightEncB = 0,
-                          leftEncB = 0;
+  public static final int rightEncA = 4,
+                          leftEncA = 5,
+                          rightEncB = 6,
+                          leftEncB = 7;
 }
