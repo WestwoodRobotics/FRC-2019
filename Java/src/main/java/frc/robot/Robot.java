@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.RobotController;
 
 import frc.robot.commands.auto.ExampleAuto;
@@ -26,9 +27,11 @@ import frc.robot.subsystems.DriveTrain;
  * project.
  */
 public class Robot extends TimedRobot {
-  
+
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  Compressor comp = new Compressor(0);
 
   /**
    * This function is run when the robot is first started up and should be
@@ -36,6 +39,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
+    //comp.setClosedLoopControl(RobotMap.closedLoopControl);
 
     m_chooser.setDefaultOption("Default Auto", new ExampleAuto());
     // chooser.addOption("My Auto", new MyAutoCommand());
