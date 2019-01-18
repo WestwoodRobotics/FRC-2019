@@ -39,4 +39,11 @@ public class RobotMap {
                           leftEncA = 5,
                           rightEncB = 6,
                           leftEncB = 7;
+
+  public static final int cargoShooterPort = 0;
+  public static final int cargoShootEncoderPort = 0;
+
+
+  //i guess this would work?? idkkk
+  public static final double cargoMotorSpeed = 0.3;
 }
