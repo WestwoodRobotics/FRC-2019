@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.RobotController;
 
 import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.PistonLift;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,7 +41,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    //comp.setClosedLoopControl(RobotMap.closedLoopControl);
+    comp.setClosedLoopControl(true);
 
     m_chooser.setDefaultOption("Default Auto", new ExampleAuto());
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -62,6 +63,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
     SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getAngle());
+    SmartDashboard.putString("Solenoid", PistonLift.getInstance().getSol());
   }
 
   /**

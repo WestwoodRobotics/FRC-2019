@@ -30,10 +30,10 @@ public class DriveTrain extends Subsystem {
 
   public static final double ramp = 0.1;
 
-  private Spark leftMaster = new Spark(RobotMap.leftTalon1Port),
-                       left2 = new Spark(RobotMap.leftTalon2Port),
-                       rightMaster = new Spark(RobotMap.rightTalon1Port),
-                       right2 = new Spark(RobotMap.rightTalon2Port);
+  private Spark leftMaster = new Spark(RobotMap.leftSpark1Port),
+                       left2 = new Spark(RobotMap.leftSpark2Port),
+                       rightMaster = new Spark(RobotMap.rightSpark1Port),
+                       right2 = new Spark(RobotMap.rightSpark2Port);
 
   private SpeedControllerGroup gR = new SpeedControllerGroup(rightMaster, right2);
   private SpeedControllerGroup gL = new SpeedControllerGroup(leftMaster, left2);
