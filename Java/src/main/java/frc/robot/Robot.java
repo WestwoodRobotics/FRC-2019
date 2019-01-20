@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
     SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getAngle());
     SmartDashboard.putString("Solenoid", PistonLift.getInstance().getSol());
+    SmartDashboard.putBoolean("Gyro Connection", DriveTrain.getInstance().isGyroConnected());
   }
 
   /**

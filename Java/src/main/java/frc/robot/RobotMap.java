@@ -31,9 +31,9 @@ public class RobotMap {
                           doubleSolChan2 = 1;
 
   public static final int leftSpark1Port = 0,
-                          leftSpark2Port = 1,
-                          rightSpark1Port = 2,
-                          rightSpark2Port = 3;
+                          leftVictor2Port = 0,
+                          rightSpark1Port = 1,
+                          rightVictor2Port = 1;
 
   public static final int rightEncA = 4,
                           leftEncA = 5,
@@ -41,9 +41,13 @@ public class RobotMap {
                           leftEncB = 7;
 
   public static final int cargoShooterPort = 0;
-  public static final int cargoShootEncoderPort = 0;
 
-
-  //i guess this would work?? idkkk
   public static final double cargoMotorSpeed = 0.3;
+
+  public enum Cargo{
+    OFF,
+    OUT,
+    IN;
+  }
+
 }

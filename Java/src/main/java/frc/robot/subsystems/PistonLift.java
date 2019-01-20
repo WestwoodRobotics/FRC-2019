@@ -55,7 +55,7 @@ public class PistonLift extends Subsystem {
       return "none";
     }
   }
-
+//Ishan looks like a squid
   private static PistonLift instance;
   public static PistonLift getInstance(){
     if(instance == null)

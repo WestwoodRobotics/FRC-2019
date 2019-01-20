@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.AdjustLift;
-
+import frc.robot.commands.ShiftSlow;
 
 
 /**
@@ -58,17 +58,23 @@ public class OI {
   Joystick lJoy = new Joystick(lJoyPort);
 
   Button solToggle = new JoystickButton(rJoy, 4);
-
+  
+  Button rJoyTrigger = new JoystickButton(rJoy, 1);
+  Button lJoyTrigger = new JoystickButton(lJoy, 1);
+  
   public OI() {
     solToggle.whenReleased(new AdjustLift(true));
+    
+    rJoyTrigger.whenPressed(new ShiftSlow(true));
+    rJoyTrigger.whenReleased(new ShiftSlow(false));
   }
 
   public double getLJoyY(){
-    return -lJoy.getY();
+    return lJoy.getY();
   }
 
   public double getRJoyY(){
-    return -rJoy.getY();
+    return rJoy.getY();
   }
 
   //Provides for one singular operator interface across all files

@@ -8,18 +8,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.RobotMap;
-import frc.robot.subsystems.CargoShooter;
+import frc.robot.subsystems.DriveTrain;
 
-public class MoveCargo extends Command {
+public class ShiftSlow extends Command {
+  DriveTrain dt_s = DriveTrain.getInstance();
+  private boolean v = false;
   
-  RobotMap.Cargo c = RobotMap.Cargo.OFF;
-  CargoShooter cs = CargoShooter.getInstance();
-
-  public MoveCargo(RobotMap.Cargo c) {
+  public ShiftSlow(boolean v) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.c = c;
+    this.v = v;
   }
 
   // Called just before this Command runs the first time
@@ -30,38 +28,23 @@ public class MoveCargo extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(c == RobotMap.Cargo.IN){
-      cs.pullBall();
-    }
-    else if(c == RobotMap.Cargo.OUT){
-      cs.pushBall();
-    }
-    else if(c == RobotMap.Cargo.OFF){
-      cs.stopBall();
-    }
-    else{
-      cs.stopBall();
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(c == RobotMap.Cargo.OFF)
-      return true;
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    cs.stopBall();
+    dt_s.setSlow(v);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    cs.stopBall();
   }
 }

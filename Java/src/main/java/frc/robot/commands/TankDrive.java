@@ -34,9 +34,17 @@ public class TankDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    leftSpd = OI.getInstance().getLJoyY();
-    rightSpd = OI.getInstance().getRJoyY();
+    double lJoyVal = OI.getInstance().getLJoyY();
+    double rJoyVal = OI.getInstance().getRJoyY();
 
+    if(!dt_s.getSlow()){
+      leftSpd = (Math.abs(lJoyVal) > 0.5)?Math.round(lJoyVal):0;
+      rightSpd = (Math.abs(rJoyVal) > 0.5)?Math.round(rJoyVal):0;
+    }
+    else if(dt_s.getSlow()){
+      leftSpd = (Math.abs(lJoyVal) > 0.5)?Math.round(lJoyVal)*.5:0;
+      rightSpd = (Math.abs(rJoyVal) > 0.5)?Math.round(rJoyVal)*.5:0;
+    }
     dt_s.driveWheels(leftSpd, rightSpd);
   }
 

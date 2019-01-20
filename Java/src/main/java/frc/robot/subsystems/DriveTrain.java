@@ -7,13 +7,16 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+//import com.ctre.phoenix.motorcontrol.ControlMode;
+//import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.*;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -27,13 +30,13 @@ import frc.robot.commands.TankDrive;
 public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-
-  public static final double ramp = 0.1;
+  private boolean slowMode = false;
 
   private Spark leftMaster = new Spark(RobotMap.leftSpark1Port),
-                       left2 = new Spark(RobotMap.leftSpark2Port),
-                       rightMaster = new Spark(RobotMap.rightSpark1Port),
-                       right2 = new Spark(RobotMap.rightSpark2Port);
+                       rightMaster = new Spark(RobotMap.rightSpark1Port);
+
+  private WPI_VictorSPX left2 = new WPI_VictorSPX(RobotMap.leftVictor2Port),
+                        right2 = new WPI_VictorSPX(RobotMap.rightVictor2Port);
 
   private SpeedControllerGroup gR = new SpeedControllerGroup(rightMaster, right2);
   private SpeedControllerGroup gL = new SpeedControllerGroup(leftMaster, left2);
@@ -45,11 +48,11 @@ public class DriveTrain extends Subsystem {
 
   private boolean squaredInputs = false; //Provides finer control at lower inputs of joystick by squaring value and reapplying sign
 
-  private ADXRS450_Gyro gyro = new ADXRS450_Gyro(Port.kOnboardCS0);
+  private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
   public DriveTrain(){
-    //left2.set(ControlMode.Follower, RobotMap.leftTalon1Port);
-    //right2.set(ControlMode.Follower, RobotMap.rightTalon1Port);
+    left2.set(ControlMode.Follower, RobotMap.leftSpark1Port);
+    right2.set(ControlMode.Follower, RobotMap.rightSpark1Port);
 
     //leftMaster.configOpenloopRamp(ramp, 25);
     //left2.configOpenloopRamp(ramp, 25);
@@ -61,6 +64,8 @@ public class DriveTrain extends Subsystem {
     leftEnc.reset();
     
     //setDeadband(0.05);
+    this.calibrateGyro();
+    this.resetGyro();
   }
 
   @Override
@@ -78,6 +83,14 @@ public class DriveTrain extends Subsystem {
 
   public void stopWheels(){
     this.driveWheels(0, 0);
+  }
+
+  public void setSlow(boolean isSlowMode){
+    slowMode = isSlowMode;
+  }
+
+  public boolean getSlow(){
+    return slowMode;
   }
 
   public void setSquaredInputs(boolean squaredInputs){
@@ -107,6 +120,14 @@ public class DriveTrain extends Subsystem {
 
   public double getAngle(){
     return gyro.getAngle();
+  }
+
+  public boolean isGyroConnected(){
+    return gyro.isConnected();
+  }
+
+  public void calibrateGyro(){
+    gyro.calibrate();
   }
 
   public void resetGyro(){
