@@ -36,12 +36,6 @@ public class MoveCargo extends Command {
     else if(c == RobotMap.Cargo.OUT){
       cs.pushBall();
     }
-    else if(c == RobotMap.Cargo.OFF){
-      cs.stopBall();
-    }
-    else{
-      cs.stopBall();
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

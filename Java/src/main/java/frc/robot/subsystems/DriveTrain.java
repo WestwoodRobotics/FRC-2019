@@ -13,6 +13,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.*;
 
+import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -48,7 +49,7 @@ public class DriveTrain extends Subsystem {
 
   private boolean squaredInputs = false; //Provides finer control at lower inputs of joystick by squaring value and reapplying sign
 
-  private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+  private ADIS16448_IMU imu = new ADIS16448_IMU();
 
   public DriveTrain(){
     left2.set(ControlMode.Follower, RobotMap.leftSpark1Port);
@@ -64,8 +65,8 @@ public class DriveTrain extends Subsystem {
     leftEnc.reset();
     
     //setDeadband(0.05);
-    this.calibrateGyro();
-    this.resetGyro();
+    this.calibrateIMU();
+    this.resetIMU();
   }
 
   @Override
@@ -118,20 +119,68 @@ public class DriveTrain extends Subsystem {
     leftEnc.reset();
   }
 
-  public double getAngle(){
-    return gyro.getAngle();
+  public void calibrateIMU() {
+    imu.calibrate();
+  }
+  
+  public void resetIMU() {
+    imu.reset();
   }
 
-  public boolean isGyroConnected(){
-    return gyro.isConnected();
+  public double getXHeading() {
+    return imu.getAngleX();
   }
-
-  public void calibrateGyro(){
-    gyro.calibrate();
+  
+  public double getYHeading() {
+    return imu.getAngleY();
   }
-
-  public void resetGyro(){
-    gyro.reset();
+  
+  public double getZHeading() {
+    return imu.getAngleZ();
+  }
+  
+  public double getXAccel() {
+    return imu.getAccelX();
+  }
+  
+  public double getYAccel() {
+    return imu.getAccelY();
+  }
+  
+  public double getZAccel() {
+    return imu.getAccelZ();
+  }
+  
+  public double getTemp() {
+    return imu.getTemperature();
+  }
+  
+  public double getXMag() {
+    return imu.getMagX();
+  }
+  
+  public double getYMag() {
+    return imu.getMagY();
+  }
+  
+  public double getZMag() {
+    return imu.getMagZ();
+  }
+  
+  public double getPressure() {
+    return imu.getBarometricPressure();
+  }
+  
+  public double getYaw() {
+    return imu.getYaw();
+  }
+  
+  public double getPitch() {
+    return imu.getPitch();
+  }
+  
+  public double getRoll() {
+    return imu.getRoll();
   }
 
   //Provides for one singular drivetrain across all files

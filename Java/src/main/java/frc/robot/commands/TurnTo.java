@@ -38,7 +38,7 @@ public class TurnTo extends Command {
     
       @Override
       public double pidGet() {
-        return dt_s.getAngle();
+        return dt_s.getZHeading();
       }
     
       @Override
@@ -56,7 +56,7 @@ public class TurnTo extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    dt_s.resetGyro();		// reset gyros
+    dt_s.resetIMU();		// reset gyros
     pid.reset();
     pid.enable();
   }

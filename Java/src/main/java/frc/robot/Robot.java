@@ -49,6 +49,9 @@ public class Robot extends TimedRobot {
     
     DriveTrain.getInstance();
     OI.getInstance();
+
+    DriveTrain.getInstance().resetIMU();
+    DriveTrain.getInstance().calibrateIMU();
   }
 
   /**
@@ -62,9 +65,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
-    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getAngle());
     SmartDashboard.putString("Solenoid", PistonLift.getInstance().getSol());
-    SmartDashboard.putBoolean("Gyro Connection", DriveTrain.getInstance().isGyroConnected());
   }
 
   /**
@@ -130,6 +131,9 @@ public class Robot extends TimedRobot {
     DriveTrain.getInstance().setDeadband(RobotMap.deadbandLimit);
     
     CameraServer.getInstance().startAutomaticCapture();
+
+    DriveTrain.getInstance().resetIMU();
+    DriveTrain.getInstance().calibrateIMU();
   }
 
   /**
