@@ -17,11 +17,9 @@ import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.SPI.Port;
 import frc.robot.RobotMap;
 import frc.robot.commands.TankDrive;
 
@@ -67,6 +65,8 @@ public class DriveTrain extends Subsystem {
     //setDeadband(0.05);
     this.calibrateIMU();
     this.resetIMU();
+
+    System.out.println(this.getZHeading());
   }
 
   @Override

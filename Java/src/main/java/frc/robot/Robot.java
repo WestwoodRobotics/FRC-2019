@@ -65,7 +65,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
-    SmartDashboard.putString("Solenoid", PistonLift.getInstance().getSol());
+    //SmartDashboard.putString("Solenoid", PistonLift.getInstance().getSol());
+    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
+    System.out.println("Gyro: " + DriveTrain.getInstance().getZHeading());
+    System.out.println("Yaw: " + DriveTrain.getInstance().getYaw());
   }
 
   /**
@@ -75,11 +78,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    DriveTrain.getInstance().resetIMU();
+    DriveTrain.getInstance().calibrateIMU();
   }
 
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
+
+    DriveTrain.getInstance().resetIMU();
+    DriveTrain.getInstance().calibrateIMU();
   }
 
   /**
@@ -142,6 +150,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
   }
 
   /**
