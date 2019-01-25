@@ -24,27 +24,22 @@ public class PistonLift extends Subsystem {
   private Solenoid solFront = new Solenoid(RobotMap.liftSolFrontChan);
   private Solenoid solBack = new Solenoid(RobotMap.liftSolBackChan);
 
-  private boolean solFrontValue = false;
-  private boolean solBackValue = false;
-
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new AdjustLift());
+    setDefaultCommand(new AdjustLift(false, false));
 
-    solFront.set(solFrontValue);
-    solBack.set(solBackValue);
+    solFront.set(false);
+    solBack.set(false);
   }
 
-  public void setFrontSol(){
-    solFront.set(!solFrontValue);
-    solFrontValue = solFront.get();
+  public void setFrontSol(boolean value){
+    solFront.set(value);
   }
 
-  public void setBackSol(){
-    solBack.set(!solBackValue);
-    solBackValue = solBack.get();
+  public void setBackSol(boolean value){
+    solBack.set(value);
   }
 
   public boolean getFrontSol(){
