@@ -12,11 +12,16 @@ import frc.robot.subsystems.PistonLift;
 
 public class AdjustLift extends Command {
   
-  boolean v = false;
+  private boolean frontSol;
+  private boolean backSol;
 
-  public AdjustLift(boolean v) {
+  //NOT DONE
+
+  public AdjustLift(boolean frontSol, boolean backSol) {
     requires(PistonLift.getInstance());
-    this.v = v;
+    
+    this.frontSol = frontSol;
+    this.backSol = backSol;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -40,11 +45,7 @@ public class AdjustLift extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    if(v == true)
-      PistonLift.getInstance().toggleSol();
-    else if(v == false){
-      PistonLift.getInstance().stopSol();
-    }
+    
   }
 
   // Called when another command which requires one or more of the same

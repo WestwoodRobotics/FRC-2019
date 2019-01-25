@@ -17,6 +17,7 @@ import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -48,6 +49,8 @@ public class DriveTrain extends Subsystem {
   private boolean squaredInputs = false; //Provides finer control at lower inputs of joystick by squaring value and reapplying sign
 
   private ADIS16448_IMU imu = new ADIS16448_IMU();
+
+  private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
   public DriveTrain(){
     left2.set(ControlMode.Follower, RobotMap.leftSpark1Port);
@@ -125,6 +128,18 @@ public class DriveTrain extends Subsystem {
   
   public void resetIMU() {
     imu.reset();
+  }
+
+  public void calibrateGyro(){
+    gyro.calibrate();
+  }
+
+  public void resetGyro(){
+    gyro.reset();
+  }
+
+  public double getAngle(){
+    return gyro.getAngle();
   }
 
   public double getXHeading() {

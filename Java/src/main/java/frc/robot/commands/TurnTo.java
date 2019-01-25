@@ -38,7 +38,7 @@ public class TurnTo extends Command {
     
       @Override
       public double pidGet() {
-        return dt_s.getZHeading();
+        return dt_s.getAngle();
       }
     
       @Override

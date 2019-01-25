@@ -27,9 +27,9 @@ public class RobotMap {
   public static final double deadbandLimit = 0.05;
   public static final double driveTimeSpeed = 0.4;
 
-  public static final int doubleSolChan1 = 0, 
-                          doubleSolChan2 = 1;
-
+  public static final int liftSolFrontChan = 0,
+                          liftSolBackChan = 0;
+                          
   public static final int leftSpark1Port = 0,
                           leftVictor2Port = 0,
                           rightSpark1Port = 1,
@@ -41,6 +41,7 @@ public class RobotMap {
                           leftEncB = 7;
 
   public static final int cargoShooterPort = 0;
+  public static final int hatchGrabberSolPort = 0;
 
   public static final double cargoMotorSpeed = 0.3;
 

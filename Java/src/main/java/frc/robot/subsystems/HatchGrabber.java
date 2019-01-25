@@ -10,55 +10,28 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.AdjustLift;
 
 /**
  * Add your docs here.
  */
-public class PistonLift extends Subsystem {
+public class HatchGrabber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  //NOT DONE
-
-  private Solenoid solFront = new Solenoid(RobotMap.liftSolFrontChan);
-  private Solenoid solBack = new Solenoid(RobotMap.liftSolBackChan);
-
-  private boolean solFrontValue = false;
-  private boolean solBackValue = false;
+  private Solenoid hatchSol = new Solenoid(RobotMap.hatchGrabberSolPort);
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new AdjustLift());
-
-    solFront.set(solFrontValue);
-    solBack.set(solBackValue);
   }
 
-  public void setFrontSol(){
-    solFront.set(!solFrontValue);
-    solFrontValue = solFront.get();
+  public void open(){
+    hatchSol.set(true);
   }
 
-  public void setBackSol(){
-    solBack.set(!solBackValue);
-    solBackValue = solBack.get();
+  public void close(){
+    hatchSol.set(false);  
   }
 
-  public boolean getFrontSol(){
-    return solFront.get();  
-  }
-
-  public boolean getBackSol(){
-    return solBack.get();  
-  }
-
-  private static PistonLift instance;
-  public static PistonLift getInstance(){
-    if(instance == null)
-      instance = new PistonLift();
-    return instance;  
-  }
 }

@@ -7,64 +7,49 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.OI;
-
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.subsystems.HatchGrabber;
 
-public class TankDrive extends Command {
+public class GrabHatch extends Command {
 
-  OI m_oi = OI.getInstance();
-  DriveTrain dt_s = DriveTrain.getInstance();
+  public HatchGrabber hg = new HatchGrabber();
 
-  private double rightSpd;
-  private double leftSpd;
+  private boolean isGrabberOpen;
 
-  public TankDrive() {
-    requires(dt_s);
-    setInterruptible(true);
+  public GrabHatch(boolean isGrabberOpen) {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    this.isGrabberOpen = isGrabberOpen;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    dt_s.setSquaredInputs(true); //Provides finer control at lower inputs of joystick by squaring value and reapplying sign
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double lJoyVal = OI.getInstance().getLJoyY();
-    double rJoyVal = OI.getInstance().getRJoyY();
-
-      if(!dt_s.getSlow()){
-      leftSpd = (Math.abs(lJoyVal) > 0.5)?Math.round(lJoyVal):0;
-      rightSpd = (Math.abs(rJoyVal) > 0.5)?Math.round(rJoyVal):0;
-    }
-    else if(dt_s.getSlow()){
-      leftSpd = (Math.abs(lJoyVal) > 0.5)?Math.round(lJoyVal)*.5:0;
-      rightSpd = (Math.abs(rJoyVal) > 0.5)?Math.round(rJoyVal)*.5:0;
-    }
-    dt_s.driveWheels(leftSpd, rightSpd);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    dt_s.stopWheels();
-    dt_s.setSquaredInputs(false);
+    if(isGrabberOpen)
+      hg.open();
+    else if(isGrabberOpen)
+      hg.close();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }
