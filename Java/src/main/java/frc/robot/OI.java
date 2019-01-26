@@ -56,15 +56,11 @@ public class OI {
   //Controllers accessing the ports
   Joystick rJoy = new Joystick(rJoyPort);
   Joystick lJoy = new Joystick(lJoyPort);
-
-  Button solToggle = new JoystickButton(rJoy, 4);
   
   Button rJoyTrigger = new JoystickButton(rJoy, 1);
   Button lJoyTrigger = new JoystickButton(lJoy, 1);
   
   public OI() {
-    solToggle.whenReleased(new AdjustLift(true));
-    
     rJoyTrigger.whenPressed(new ShiftSlow(true));
     rJoyTrigger.whenReleased(new ShiftSlow(false));
   }

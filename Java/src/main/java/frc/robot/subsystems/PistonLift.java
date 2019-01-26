@@ -19,8 +19,6 @@ public class PistonLift extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  //NOT DONE
-
   private Solenoid solFront = new Solenoid(RobotMap.liftSolFrontChan);
   private Solenoid solBack = new Solenoid(RobotMap.liftSolBackChan);
 
