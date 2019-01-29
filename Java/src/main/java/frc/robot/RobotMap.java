@@ -30,25 +30,32 @@ public class RobotMap {
   public static final int liftSolFrontChan = 0,
                           liftSolBackChan = 0;
                           
-  public static final int leftSpark1Port = 0,
-                          leftVictor2Port = 0,
-                          rightSpark1Port = 1,
-                          rightVictor2Port = 1;
+  public static final int leftTalon1Port = 0,
+                          leftTalon2Port = 1,
+                          rightTalon1Port = 2,
+                          rightTalon2Port = 3;
 
   public static final int rightEncA = 4,
                           leftEncA = 5,
                           rightEncB = 6,
                           leftEncB = 7;
 
-  public static final int cargoShooterPort = 0;
+  public static final int cargoShooterTalonPort = 0;
   public static final int hatchGrabberSolPort = 0;
 
-  public static final double cargoMotorSpeed = 0.3;
+  public static final int armTalon1Port = 4,
+                          armTalon2Port = 5;
 
   public enum Cargo{
     OFF,
     OUT,
     IN;
+  }
+
+  public enum LiftMode{
+    SET,
+    TOGGLE_FRONT,
+    TOGGLE_BACK;
   }
 
 }

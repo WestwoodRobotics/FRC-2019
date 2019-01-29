@@ -26,10 +26,18 @@ public class PistonLift extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new AdjustLift(false, false));
+    setDefaultCommand(new AdjustLift(RobotMap.LiftMode.SET, false, false));
 
     solFront.set(false);
     solBack.set(false);
+  }
+
+  public void toggleFrontSol(){
+    solFront.set(!solFront.get());
+  }
+
+  public void toggleBackSol(){
+    solBack.set(!solBack.get());
   }
 
   public void setFrontSol(boolean value){

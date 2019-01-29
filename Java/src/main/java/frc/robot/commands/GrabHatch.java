@@ -14,12 +14,12 @@ public class GrabHatch extends Command {
 
   public HatchGrabber hg = new HatchGrabber();
 
-  private boolean isGrabberOpen;
+  private boolean v = false;
 
-  public GrabHatch(boolean isGrabberOpen) {
+  public GrabHatch(boolean v) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.isGrabberOpen = isGrabberOpen;
+    this.v = v;
   }
 
   // Called just before this Command runs the first time
@@ -41,10 +41,8 @@ public class GrabHatch extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    if(isGrabberOpen)
-      hg.open();
-    else if(isGrabberOpen)
-      hg.close();
+    if(v)
+      hg.toggle();
   }
 
   // Called when another command which requires one or more of the same

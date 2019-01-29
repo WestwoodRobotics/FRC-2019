@@ -8,24 +8,33 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.PistonLift;
 
 public class AdjustLift extends Command {
   
   public PistonLift pl = PistonLift.getInstance();
-
+  
   private boolean frontSol;
   private boolean backSol;
 
-  //NOT DONE
+  private RobotMap.LiftMode mode = RobotMap.LiftMode.SET;
 
-  public AdjustLift(boolean frontSol, boolean backSol) {
-    requires(PistonLift.getInstance());
-    
-    this.frontSol = frontSol;
-    this.backSol = backSol;
+  public AdjustLift(RobotMap.LiftMode mode, boolean frontSol, boolean backSol) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(PistonLift.getInstance());
+
+    this.mode = mode;
+
+    if(mode == RobotMap.LiftMode.SET){
+      this.frontSol = frontSol;
+      this.backSol = backSol;
+    }
+  }
+
+  public AdjustLift(RobotMap.LiftMode mode){
+    this.mode = mode;
   }
 
   // Called just before this Command runs the first time
@@ -47,8 +56,16 @@ public class AdjustLift extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    pl.setFrontSol(frontSol);
-    pl.setBackSol(backSol);
+    if(mode == RobotMap.LiftMode.SET){
+      pl.setFrontSol(frontSol);
+      pl.setBackSol(backSol);
+    }
+    else if(mode == RobotMap.LiftMode.TOGGLE_FRONT){
+      pl.toggleFrontSol();
+    }
+    else if(mode == RobotMap.LiftMode.TOGGLE_BACK){
+      pl.toggleBackSol();
+    }
   }
 
   // Called when another command which requires one or more of the same

@@ -7,40 +7,41 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.sun.java.swing.plaf.windows.TMSchema.Control;
+
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.GrabHatch;
 
 /**
  * Add your docs here.
  */
-public class HatchGrabber extends Subsystem {
+public class Arm extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private Solenoid hatchSol = new Solenoid(RobotMap.hatchGrabberSolPort);
+  private WPI_TalonSRX armMotor1 = new WPI_TalonSRX(RobotMap.armTalon1Port),
+                       armMotor2 = new WPI_TalonSRX(RobotMap.armTalon2Port);
 
+  private SpeedControllerGroup group = new SpeedControllerGroup(armMotor1, armMotor2);
+  
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new GrabHatch(false));
+    armMotor2.set(ControlMode.Follower, RobotMap.armTalon1Port);
   }
 
-  public void toggle(){
-    hatchSol.set(!hatchSol.get());
+  public void setArm(double value){
+    armMotor1.set(value);
   }
 
-  public boolean getHatch(){
-    return hatchSol.get();
-  }
-
-  //Provides for one singular operator interface across all files
-  private static HatchGrabber instance;
-  public static HatchGrabber getInstance() {
+  private static Arm instance;
+  public static Arm getInstance() {
     if(instance == null) {
-      instance = new HatchGrabber();
+      instance = new Arm();
     }
     
     return instance;

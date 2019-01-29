@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.drive.*;
 
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -30,46 +31,43 @@ import frc.robot.commands.TankDrive;
 public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  public static final double ramp = 0.1;  // acceleration of drive motors in sec
+
   private boolean slowMode = false;
 
-  private Spark leftMaster = new Spark(RobotMap.leftSpark1Port),
-                       rightMaster = new Spark(RobotMap.rightSpark1Port);
+  private WPI_TalonSRX leftMaster = new WPI_TalonSRX(RobotMap.leftTalon1Port),
+                        rightMaster = new WPI_TalonSRX(RobotMap.rightTalon1Port);
 
-  private WPI_VictorSPX left2 = new WPI_VictorSPX(RobotMap.leftVictor2Port),
-                        right2 = new WPI_VictorSPX(RobotMap.rightVictor2Port);
+  private WPI_TalonSRX left2 = new WPI_TalonSRX(RobotMap.leftTalon2Port),
+                        right2 = new WPI_TalonSRX(RobotMap.rightTalon2Port);
 
-  private SpeedControllerGroup gR = new SpeedControllerGroup(rightMaster, right2);
-  private SpeedControllerGroup gL = new SpeedControllerGroup(leftMaster, left2);
-
-  private DifferentialDrive drive = new DifferentialDrive(gR, gL);
+  private DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
 
   private Encoder rightEnc = new Encoder(RobotMap.rightEncA, RobotMap.rightEncB, false, Encoder.EncodingType.k1X);
   private Encoder leftEnc = new Encoder(RobotMap.leftEncA, RobotMap.leftEncB, false, Encoder.EncodingType.k1X);
 
   private boolean squaredInputs = false; //Provides finer control at lower inputs of joystick by squaring value and reapplying sign
 
-  private ADIS16448_IMU imu = new ADIS16448_IMU();
+  //private ADIS16448_IMU imu = new ADIS16448_IMU();
 
   private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
   public DriveTrain(){
-    left2.set(ControlMode.Follower, RobotMap.leftSpark1Port);
-    right2.set(ControlMode.Follower, RobotMap.rightSpark1Port);
+    left2.set(ControlMode.Follower, RobotMap.leftTalon1Port);
+    right2.set(ControlMode.Follower, RobotMap.rightTalon1Port);
 
-    //leftMaster.configOpenloopRamp(ramp, 25);
-    //left2.configOpenloopRamp(ramp, 25);
+    leftMaster.configOpenloopRamp(ramp, 25);
+    left2.configOpenloopRamp(ramp, 25);
     
-    //rightMaster.configOpenloopRamp(ramp, 25);
-    //right2.configOpenloopRamp(ramp, 25);
+    rightMaster.configOpenloopRamp(ramp, 25);
+    right2.configOpenloopRamp(ramp, 25);
 
     rightEnc.reset();
     leftEnc.reset();
     
     //setDeadband(0.05);
-    this.calibrateIMU();
-    this.resetIMU();
-
-    System.out.println(this.getZHeading());
+    this.calibrateGyro();
+    this.resetGyro();
   }
 
   @Override
@@ -122,13 +120,14 @@ public class DriveTrain extends Subsystem {
     leftEnc.reset();
   }
 
+  /*
   public void calibrateIMU() {
     imu.calibrate();
   }
   
   public void resetIMU() {
     imu.reset();
-  }
+  }*/
 
   public void calibrateGyro(){
     gyro.calibrate();
@@ -142,6 +141,7 @@ public class DriveTrain extends Subsystem {
     return gyro.getAngle();
   }
 
+  /*
   public double getXHeading() {
     return imu.getAngleX();
   }
@@ -196,7 +196,7 @@ public class DriveTrain extends Subsystem {
   
   public double getRoll() {
     return imu.getRoll();
-  }
+  }*/
 
   //Provides for one singular drivetrain across all files
   private static DriveTrain instance;

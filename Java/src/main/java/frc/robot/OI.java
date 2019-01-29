@@ -11,7 +11,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.RobotMap.Cargo;
+import frc.robot.RobotMap.LiftMode;
 import frc.robot.commands.AdjustLift;
+import frc.robot.commands.GrabHatch;
+import frc.robot.commands.MoveCargo;
 import frc.robot.commands.ShiftSlow;
 
 
@@ -60,9 +64,27 @@ public class OI {
   Button rJoyTrigger = new JoystickButton(rJoy, 1);
   Button lJoyTrigger = new JoystickButton(lJoy, 1);
   
+  Button rightR = new JoystickButton(rJoy, 4);
+  Button rightL = new JoystickButton(rJoy, 3);
+  
+  Button leftR = new JoystickButton(lJoy, 4);
+  Button leftL = new JoystickButton(lJoy, 3);
+  Button leftLower = new JoystickButton(lJoy, 2);
+
   public OI() {
     rJoyTrigger.whenPressed(new ShiftSlow(true));
     rJoyTrigger.whenReleased(new ShiftSlow(false));
+
+    lJoyTrigger.whenPressed(new ShiftSlow(true));
+    lJoyTrigger.whenReleased(new ShiftSlow(false));
+
+    rightR.whenPressed(new AdjustLift(LiftMode.TOGGLE_FRONT));
+    rightL.whenPressed(new AdjustLift(LiftMode.TOGGLE_BACK));
+
+    leftR.whenPressed(new MoveCargo(Cargo.OUT));
+    leftL.whenPressed(new MoveCargo(Cargo.IN));
+
+    leftLower.whenPressed(new GrabHatch(true));
   }
 
   public double getLJoyY(){
