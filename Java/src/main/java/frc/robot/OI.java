@@ -71,6 +71,9 @@ public class OI {
   Button leftL = new JoystickButton(lJoy, 3);
   Button leftLower = new JoystickButton(lJoy, 2);
 
+  Button driveSlowButtonR = new JoystickButton(rJoy, 5);
+  Button driveSLowButtonL = new JoystickButton(lJoy, 5)
+
   public OI() {
     rJoyTrigger.whenPressed(new ShiftSlow(true));
     rJoyTrigger.whenReleased(new ShiftSlow(false));
@@ -83,6 +86,12 @@ public class OI {
 
     leftR.whenPressed(new MoveCargo(Cargo.OUT));
     leftL.whenPressed(new MoveCargo(Cargo.IN));
+
+    driveSlowButtonR.whenPressed(new DriveStraight(true));
+    driveSlowButtonR.whenReleased(new DriveStraight(false));
+
+    driveSlowButtonL.whenPressed(new DriveStraight(true));
+    driveSlowButtonL.whenReleased(new DriveStraight(false));
 
     leftLower.whenPressed(new GrabHatch(true));
   }

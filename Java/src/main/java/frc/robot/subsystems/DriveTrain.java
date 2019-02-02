@@ -34,6 +34,7 @@ public class DriveTrain extends Subsystem {
   public static final double ramp = 0.1;  // acceleration of drive motors in sec
 
   private boolean slowMode = false;
+  private boolean driveStraightMode = false;
 
   private WPI_TalonSRX leftMaster = new WPI_TalonSRX(RobotMap.leftTalon1Port),
                         rightMaster = new WPI_TalonSRX(RobotMap.rightTalon1Port);
@@ -93,6 +94,14 @@ public class DriveTrain extends Subsystem {
 
   public boolean getSlow(){
     return slowMode;
+  }
+
+  public void setDriveStraightMode(boolean isDriveStraightMode) {
+    driveStraightMode = isDriveStraightMode;
+  }
+
+  public boolean getDriveStraightMode() {
+    return driveStraightMode;
   }
 
   public void setSquaredInputs(boolean squaredInputs){
