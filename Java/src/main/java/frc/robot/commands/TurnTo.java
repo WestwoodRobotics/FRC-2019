@@ -11,16 +11,17 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
 
 public class TurnTo extends Command {
   
   public DriveTrain dt_s = DriveTrain.getInstance();
 
-  public static final double P = 0,
+  public static final double P = 1.5,
                              I = 0,
-                             D = 0,
-                             absoluteTolerance = 0;
+                             D = 3.2,
+                             absoluteTolerance = 0.6;
     
   private PIDController pid;
 
@@ -38,7 +39,7 @@ public class TurnTo extends Command {
     
       @Override
       public double pidGet() {
-        return dt_s.getAngle();
+        return dt_s.getZHeading();
       }
     
       @Override
@@ -46,6 +47,9 @@ public class TurnTo extends Command {
         return m_sourceType;
       }
     }, d -> dt_s.turnRate(d));
+
+    SmartDashboard.putData("PID Controller", pid);
+
 
     pid.setInputRange(-720, 720);
     pid.setOutputRange(-0.5, 0.5);
@@ -56,9 +60,10 @@ public class TurnTo extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    dt_s.resetGyro();		// reset gyros
+    dt_s.resetIMU();		// reset gyros
     pid.reset();
     pid.enable();
+    dt_s.pidEnded = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -77,6 +82,7 @@ public class TurnTo extends Command {
   protected void end() {
     pid.disable();
     dt_s.stopWheels();
+    dt_s.pidEnded = true;
   }
 
   // Called when another command which requires one or more of the same

@@ -66,7 +66,8 @@ public class OI {
   
   Button rightR = new JoystickButton(rJoy, 4);
   Button rightL = new JoystickButton(rJoy, 3);
-  
+  Button rightLower = new JoystickButton(rJoy, 2);
+
   Button leftR = new JoystickButton(lJoy, 4);
   Button leftL = new JoystickButton(lJoy, 3);
   Button leftLower = new JoystickButton(lJoy, 2);
@@ -80,19 +81,21 @@ public class OI {
 
     rightR.whenPressed(new AdjustLift(LiftMode.TOGGLE_FRONT));
     rightL.whenPressed(new AdjustLift(LiftMode.TOGGLE_BACK));
+    rightLower.whenPressed(new GrabHatch(true));
 
     leftR.whenPressed(new MoveCargo(Cargo.OUT));
+    leftR.whenReleased(new MoveCargo(Cargo.OFF));
+    
     leftL.whenPressed(new MoveCargo(Cargo.IN));
-
-    leftLower.whenPressed(new GrabHatch(true));
+    leftL.whenReleased(new MoveCargo(Cargo.OFF));
   }
 
   public double getLJoyY(){
-    return lJoy.getY();
+    return -lJoy.getY();
   }
 
   public double getRJoyY(){
-    return rJoy.getY();
+    return -rJoy.getY();
   }
 
   //Provides for one singular operator interface across all files

@@ -12,13 +12,14 @@ import frc.robot.subsystems.HatchGrabber;
 
 public class GrabHatch extends Command {
 
-  public HatchGrabber hg = new HatchGrabber();
+  public HatchGrabber hg = HatchGrabber.getInstance();
 
   private boolean v = false;
 
   public GrabHatch(boolean v) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(hg);
     this.v = v;
   }
 

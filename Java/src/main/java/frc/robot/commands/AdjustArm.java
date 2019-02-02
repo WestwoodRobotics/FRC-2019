@@ -16,7 +16,7 @@ public class AdjustArm extends Command {
   public AdjustArm() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Arm.getInstance());
+    requires(arm);
   }
 
   // Called just before this Command runs the first time

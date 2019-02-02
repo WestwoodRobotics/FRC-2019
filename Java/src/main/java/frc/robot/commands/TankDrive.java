@@ -45,6 +45,7 @@ public class TankDrive extends Command {
       leftSpd = (Math.abs(lJoyVal) > 0.5)?Math.round(lJoyVal)*.5:0;
       rightSpd = (Math.abs(rJoyVal) > 0.5)?Math.round(rJoyVal)*.5:0;
     }
+    
     dt_s.driveWheels(leftSpd, rightSpd);
   }
 

@@ -19,6 +19,7 @@ public class MoveCargo extends Command {
   public MoveCargo(RobotMap.Cargo c) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(cs);
     this.c = c;
   }
 

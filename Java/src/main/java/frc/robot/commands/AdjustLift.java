@@ -23,7 +23,7 @@ public class AdjustLift extends Command {
   public AdjustLift(RobotMap.LiftMode mode, boolean frontSol, boolean backSol) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(PistonLift.getInstance());
+    requires(pl);
 
     this.mode = mode;
 

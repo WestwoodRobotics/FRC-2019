@@ -53,7 +53,7 @@ public class PistonLift extends Subsystem {
   }
 
   public boolean getBackSol(){
-    return solBack.get();  
+    return solBack.get(); 
   }
 
   private static PistonLift instance;

@@ -34,7 +34,7 @@ public class Robot extends TimedRobot{
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  Compressor comp = new Compressor(0);
+  Compressor comp = new Compressor();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -52,8 +52,8 @@ public class Robot extends TimedRobot{
     DriveTrain.getInstance();
     OI.getInstance();
 
-    DriveTrain.getInstance().resetGyro();
-    DriveTrain.getInstance().calibrateGyro();
+    DriveTrain.getInstance().resetIMU();
+    DriveTrain.getInstance().calibrateIMU();
   }
 
   /**
@@ -68,14 +68,16 @@ public class Robot extends TimedRobot{
   public void robotPeriodic() {
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
     //SmartDashboard.putString("Solenoid", PistonLift.getInstance().getSol());
-    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getAngle());
+    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
     
-    SmartDashboard.putBoolean("Back Lift", PistonLift.getInstance().getBackSol());
-    SmartDashboard.putBoolean("Front Lift", PistonLift.getInstance().getFrontSol());
+    SmartDashboard.putBoolean("PID Ended", DriveTrain.getInstance().pidEnded);
+    
+    //SmartDashboard.putBoolean("Back Lift", PistonLift.getInstance().getBackSol());
+    //SmartDashboard.putBoolean("Front Lift", PistonLift.getInstance().getFrontSol());
 
-    SmartDashboard.putBoolean("Hatch", HatchGrabber.getInstance().getHatch());
+    //SmartDashboard.putBoolean("Hatch", HatchGrabber.getInstance().getHatch());
 
-    SmartDashboard.putNumber("Cargo", CargoShooter.getInstance().getBall());
+    //SmartDashboard.putNumber("Cargo", CargoShooter.getInstance().getBall());
     
   }
 
@@ -86,16 +88,14 @@ public class Robot extends TimedRobot{
    */
   @Override
   public void disabledInit() {
-    DriveTrain.getInstance().resetGyro();
-    DriveTrain.getInstance().calibrateGyro();
+    DriveTrain.getInstance().calibrateIMU();
   }
 
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
 
-    DriveTrain.getInstance().resetGyro();
-    DriveTrain.getInstance().calibrateGyro();
+    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
   }
 
   /**
@@ -132,6 +132,8 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+
+    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
   }
 
   @Override
@@ -145,9 +147,6 @@ public class Robot extends TimedRobot{
     }
 
     DriveTrain.getInstance().setDeadband(RobotMap.deadbandLimit);
-
-    DriveTrain.getInstance().resetGyro();
-    DriveTrain.getInstance().calibrateGyro();
   }
 
   /**
@@ -157,7 +156,8 @@ public class Robot extends TimedRobot{
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getAngle());
+    System.out.println(DriveTrain.getInstance().getZHeading());
+    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
   }
 
   /**

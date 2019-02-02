@@ -27,20 +27,20 @@ public class RobotMap {
   public static final double deadbandLimit = 0.05;
   public static final double driveTimeSpeed = 0.4;
 
-  public static final int liftSolFrontChan = 0,
-                          liftSolBackChan = 0;
+  public static final int liftSolFrontChan = 3,
+                          liftSolBackChan = 5;
                           
-  public static final int leftTalon1Port = 0,
-                          leftTalon2Port = 1,
-                          rightTalon1Port = 2,
-                          rightTalon2Port = 3;
+  public static final int leftTalon1Port = 1,
+                          leftTalon2Port = 2,
+                          rightTalon1Port = 4,
+                          rightTalon2Port = 5;
 
   public static final int rightEncA = 4,
                           leftEncA = 5,
                           rightEncB = 6,
                           leftEncB = 7;
 
-  public static final int cargoShooterTalonPort = 0;
+  public static final int cargoShooterTalonPort = 3;
   public static final int hatchGrabberSolPort = 0;
 
   public static final int armTalon1Port = 4,

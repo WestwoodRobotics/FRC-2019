@@ -48,9 +48,9 @@ public class DriveTrain extends Subsystem {
 
   private boolean squaredInputs = false; //Provides finer control at lower inputs of joystick by squaring value and reapplying sign
 
-  //private ADIS16448_IMU imu = new ADIS16448_IMU();
+  private ADIS16448_IMU imu = new ADIS16448_IMU();
 
-  private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+  public boolean pidEnded = false; //Remove this later 
 
   public DriveTrain(){
     left2.set(ControlMode.Follower, RobotMap.leftTalon1Port);
@@ -65,9 +65,11 @@ public class DriveTrain extends Subsystem {
     rightEnc.reset();
     leftEnc.reset();
     
-    //setDeadband(0.05);
-    this.calibrateGyro();
-    this.resetGyro();
+    setDeadband(0.05);
+
+    this.calibrateIMU();
+    this.resetIMU();
+    
   }
 
   @Override
@@ -119,29 +121,28 @@ public class DriveTrain extends Subsystem {
     rightEnc.reset();
     leftEnc.reset();
   }
-
-  /*
+  
   public void calibrateIMU() {
     imu.calibrate();
   }
   
   public void resetIMU() {
     imu.reset();
-  }*/
+  }
 
   public void calibrateGyro(){
-    gyro.calibrate();
+    //gyro.calibrate();
   }
 
   public void resetGyro(){
-    gyro.reset();
+    //gyro.reset();
   }
 
   public double getAngle(){
-    return gyro.getAngle();
+    //return gyro.getAngle();
+    return 0;
   }
 
-  /*
   public double getXHeading() {
     return imu.getAngleX();
   }
@@ -196,7 +197,7 @@ public class DriveTrain extends Subsystem {
   
   public double getRoll() {
     return imu.getRoll();
-  }*/
+  }
 
   //Provides for one singular drivetrain across all files
   private static DriveTrain instance;

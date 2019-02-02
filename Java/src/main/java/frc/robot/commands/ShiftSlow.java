@@ -17,6 +17,7 @@ public class ShiftSlow extends Command {
   public ShiftSlow(boolean v) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(dt_s);
     this.v = v;
   }
 
