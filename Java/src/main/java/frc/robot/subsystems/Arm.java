@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.AdjustArm;
 
 /**
  * Add your docs here.
@@ -30,7 +31,7 @@ public class Arm extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    armMotor2.set(ControlMode.Follower, RobotMap.armTalon1Port);
+    setDefaultCommand(new AdjustArm(false));
   }
 
   public void setArm(double value){

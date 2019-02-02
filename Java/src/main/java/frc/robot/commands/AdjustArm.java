@@ -13,10 +13,14 @@ import frc.robot.subsystems.Arm;
 public class AdjustArm extends Command {
   public Arm arm = Arm.getInstance();
 
-  public AdjustArm() {
+  public boolean v = false;
+
+  public AdjustArm(boolean v) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(arm);
+
+    this.v = v;
   }
 
   // Called just before this Command runs the first time
@@ -27,7 +31,10 @@ public class AdjustArm extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    arm.setArm(1);
+    if(true)
+      arm.setArm(1);
+    else
+      arm.setArm(0);
   }
 
   // Make this return true when this Command no longer needs to run execute()

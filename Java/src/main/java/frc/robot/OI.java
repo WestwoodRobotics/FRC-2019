@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotMap.Cargo;
 import frc.robot.RobotMap.LiftMode;
+import frc.robot.commands.AdjustArm;
 import frc.robot.commands.AdjustLift;
 import frc.robot.commands.GrabHatch;
 import frc.robot.commands.MoveCargo;
@@ -88,6 +89,9 @@ public class OI {
     
     leftL.whenPressed(new MoveCargo(Cargo.IN));
     leftL.whenReleased(new MoveCargo(Cargo.OFF));
+
+    leftLower.whenPressed(new AdjustArm(true));
+    leftLower.whenReleased(new AdjustArm(false));
   }
 
   public double getLJoyY(){
