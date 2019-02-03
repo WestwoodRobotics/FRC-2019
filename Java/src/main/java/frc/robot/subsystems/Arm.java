@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -26,16 +27,25 @@ public class Arm extends Subsystem {
                        armMotor2 = new WPI_TalonSRX(RobotMap.armTalon2Port);
 
   private SpeedControllerGroup group = new SpeedControllerGroup(armMotor1, armMotor2);
-  
+
+  public Arm(){
+    armMotor1.setNeutralMode(NeutralMode.Brake);
+    armMotor2.setNeutralMode(NeutralMode.Brake);
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new AdjustArm(false));
+    setDefaultCommand(new AdjustArm(RobotMap.Arm.OFF));
   }
 
   public void setArm(double value){
-    armMotor1.set(value);
+    group.set(value);
+  }
+
+  public void brakeArm(){
+    group.stopMotor();
   }
 
   private static Arm instance;

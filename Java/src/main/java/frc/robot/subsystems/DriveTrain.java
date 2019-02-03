@@ -53,46 +53,58 @@ public class DriveTrain extends Subsystem {
   public boolean pidEnded = false; //Remove this later 
 
   public DriveTrain(){
+    //Sets the second motor for both the left and right side to follow the first motor
     left2.set(ControlMode.Follower, RobotMap.leftTalon1Port);
     right2.set(ControlMode.Follower, RobotMap.rightTalon1Port);
 
+    //Adds a ramp up (acceleration) for the left side
     leftMaster.configOpenloopRamp(ramp, 25);
     left2.configOpenloopRamp(ramp, 25);
     
+    //Adds a ramp up (acceleration) for the right side
     rightMaster.configOpenloopRamp(ramp, 25);
     right2.configOpenloopRamp(ramp, 25);
 
+    //Reset both encoders
     rightEnc.reset();
     leftEnc.reset();
     
+    //Set the deadband
     setDeadband(0.05);
 
+    //Calibrate and reset the IMU
     this.calibrateIMU();
     this.resetIMU();
     
   }
 
+  //Default command when the drivetrain is created
   @Override
   public void initDefaultCommand(){
     setDefaultCommand(new TankDrive());
   }
 
+  //Drive the wheels in teleop and auto
   public void driveWheels(double leftSpd, double rightSpd){
     drive.tankDrive(leftSpd, rightSpd, this.squaredInputs);
   }
 
+  //Turn in auto
   public void turnRate(double rt){
     drive.curvatureDrive(0, rt, true);
   }
 
+  //Stop the wheels
   public void stopWheels(){
     this.driveWheels(0, 0);
   }
 
+  //Set the slow mode for the robot (0.5 speed)
   public void setSlow(boolean isSlowMode){
     slowMode = isSlowMode;
   }
 
+  //Get whether the slow mode is enabled or not
   public boolean getSlow(){
     return slowMode;
   }
@@ -115,6 +127,10 @@ public class DriveTrain extends Subsystem {
   public double[] getEncoderDist(){
     double[] enc = {rightEnc.getDistance(), leftEnc.getDistance()};
     return enc;
+  }
+
+  public DifferentialDrive getDrive(){
+    return drive;
   }
 
   public void resetEncoders(){

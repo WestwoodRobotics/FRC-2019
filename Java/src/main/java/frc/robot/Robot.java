@@ -67,18 +67,11 @@ public class Robot extends TimedRobot{
   @Override
   public void robotPeriodic() {
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
-    //SmartDashboard.putString("Solenoid", PistonLift.getInstance().getSol());
     SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
-    
+
     SmartDashboard.putBoolean("PID Ended", DriveTrain.getInstance().pidEnded);
     
-    //SmartDashboard.putBoolean("Back Lift", PistonLift.getInstance().getBackSol());
-    //SmartDashboard.putBoolean("Front Lift", PistonLift.getInstance().getFrontSol());
-
-    //SmartDashboard.putBoolean("Hatch", HatchGrabber.getInstance().getHatch());
-
-    //SmartDashboard.putNumber("Cargo", CargoShooter.getInstance().getBall());
-    
+    SmartDashboard.putData("Drive", DriveTrain.getInstance().getDrive());
   }
 
   /**
@@ -94,8 +87,6 @@ public class Robot extends TimedRobot{
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
-
-    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
   }
 
   /**
@@ -132,8 +123,6 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-
-    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
   }
 
   @Override

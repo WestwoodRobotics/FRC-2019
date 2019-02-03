@@ -73,6 +73,9 @@ public class OI {
   Button leftL = new JoystickButton(lJoy, 3);
   Button leftLower = new JoystickButton(lJoy, 2);
 
+  Button armLower = new JoystickButton(lJoy, 13);
+  Button armRaise = new JoystickButton(lJoy, 12);
+
   public OI() {
     rJoyTrigger.whenPressed(new ShiftSlow(true));
     rJoyTrigger.whenReleased(new ShiftSlow(false));
@@ -90,8 +93,11 @@ public class OI {
     leftL.whenPressed(new MoveCargo(Cargo.IN));
     leftL.whenReleased(new MoveCargo(Cargo.OFF));
 
-    leftLower.whenPressed(new AdjustArm(true));
-    leftLower.whenReleased(new AdjustArm(false));
+    armLower.whenPressed(new AdjustArm(RobotMap.Arm.UP));
+    armLower.whenReleased(new AdjustArm(RobotMap.Arm.OFF));
+
+    armRaise.whenPressed(new AdjustArm(RobotMap.Arm.DOWN));
+    armRaise.whenReleased(new AdjustArm(RobotMap.Arm.OFF));
   }
 
   public double getLJoyY(){

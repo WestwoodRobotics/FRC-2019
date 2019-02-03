@@ -8,14 +8,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.Arm;
 
 public class AdjustArm extends Command {
   public Arm arm = Arm.getInstance();
 
-  public boolean v = false;
+  public RobotMap.Arm v = RobotMap.Arm.OFF;
 
-  public AdjustArm(boolean v) {
+  public AdjustArm(RobotMap.Arm v) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(arm);
@@ -31,22 +33,27 @@ public class AdjustArm extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(true)
-      arm.setArm(1);
-    else
-      arm.setArm(0);
+    if(v == RobotMap.Arm.UP){
+      arm.setArm(-.35);
+    }
+    else if(v == RobotMap.Arm.DOWN){
+      arm.setArm(-0.05);
+    }
+    else{
+      arm.brakeArm();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return (v == RobotMap.Arm.OFF);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    
+    arm.brakeArm();
   }
 
   // Called when another command which requires one or more of the same

@@ -43,8 +43,8 @@ public class RobotMap {
   public static final int cargoShooterTalonPort = 3;
   public static final int hatchGrabberSolPort = 0;
 
-  public static final int armTalon1Port = 4,
-                          armTalon2Port = 5;
+  public static final int armTalon1Port = 0,
+                          armTalon2Port = 6;
 
   public enum Cargo{
     OFF,
@@ -56,6 +56,12 @@ public class RobotMap {
     SET,
     TOGGLE_FRONT,
     TOGGLE_BACK;
+  }
+
+  public enum Arm{
+    UP,
+    DOWN,
+    OFF;
   }
 
 }
