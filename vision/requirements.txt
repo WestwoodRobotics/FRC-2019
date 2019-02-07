@@ -1,0 +1,4 @@
+numpy>=1.11.1 
+click
+opencv-python>=4.0 
+pynetworktables
