@@ -19,24 +19,23 @@ def get_color_mask(image):
   return mask, hsv 
 
 def find_image_location(method, field_image, template):
-  img_B, img_G, img_R = cv2.split(field_image)
-
   grey_field_image = cv2.cvtColor(field_image, cv2.COLOR_BGR2GRAY) # !! 
   res = cv2.matchTemplate(grey_field_image, template, method)
 
   min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
+  w, h = template.shape[::-1] 
   # If the method is TM_SQDIFF or TM_SQDIFF_NORMED, take minimum
   if method in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
-    top_left = min_loc
+      top_left = min_loc
   else:
-    top_left = max_loc
-
-  w, h = cv2.cvtColor(field_image, cv2.COLOR_BGR2GRAY).shape[::-1] 
+      top_left = max_loc
   bottom_right = (top_left[0] + w, top_left[1] + h)
-  res = cv2.rectangle(field_image, top_left, bottom_right, 255, 2)
-  
-  cv2.imshow("Found Image", res)
+
+  rect_img = cv2.rectangle(grey_field_image, top_left, bottom_right, 255, 2)
+
+  cv2.imshow("HELLO", res)
+  cv2.imshow("Found Image", rect_img)
 
   # return cv2.minAreaRect(res)
 
@@ -45,6 +44,9 @@ def find_hatch(method, field_image, hatch_image="hatch.jpg"):
 
 def find_hatch_placement(method, field_image, hatch_placement_image="hatch_location.jpg"):
   return find_image_location(method, field_image, cv2.imread(hatch_placement_image, 0))
+
+def find_hamaz(method, field_image, hamaz="hamaz.png"):
+  return find_image_location(method, field_image, cv2.imread(hamaz, 0))
 
 def find_hatch_distance():
   pass
@@ -60,7 +62,7 @@ def run(smartDashboard, cap):
     cv2.imshow("preview", frame)
     cv2.waitKey()
 
-    find_hatch(METHOD, field_image=frame)
+    find_hamaz(METHOD, field_image=frame)
 
 def init_image_capture(device):
   cap = cv2.VideoCapture(device)
@@ -68,10 +70,10 @@ def init_image_capture(device):
     print("failed to open camera device {0}".format(device))
     if device != 0:
       print("resetting device id to 0")
-      return init_image_capture(0) 
+      return init_image_capture(0)
 
-  # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1400)
-  # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1400)
+  cap.set(cv2.CAP_PROP_FRAME_WIDTH, 600)
+  cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 600)
   print("done initializing the image capture")
 
   return cap
