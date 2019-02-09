@@ -43,8 +43,8 @@ public class DriveTrain extends Subsystem {
 
   private DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
 
-  private Encoder rightEnc = new Encoder(RobotMap.rightEncA, RobotMap.rightEncB, false, Encoder.EncodingType.k1X);
-  private Encoder leftEnc = new Encoder(RobotMap.leftEncA, RobotMap.leftEncB, false, Encoder.EncodingType.k1X);
+  //private Encoder rightEnc = new Encoder(RobotMap.rightEncA, RobotMap.rightEncB, false, Encoder.EncodingType.k1X);
+  //private Encoder leftEnc = new Encoder(RobotMap.leftEncA, RobotMap.leftEncB, false, Encoder.EncodingType.k1X);
 
   private boolean squaredInputs = false; //Provides finer control at lower inputs of joystick by squaring value and reapplying sign
 
@@ -66,8 +66,8 @@ public class DriveTrain extends Subsystem {
     right2.configOpenloopRamp(ramp, 25);
 
     //Reset both encoders
-    rightEnc.reset();
-    leftEnc.reset();
+    //rightEnc.reset();
+    //leftEnc.reset();
     
     //Set the deadband
     setDeadband(0.05);
@@ -118,7 +118,7 @@ public class DriveTrain extends Subsystem {
   }
   
   //Provides raw encoder value NOT IN INCHES
-  public double[] getEncoders(){
+  /*public double[] getEncoders(){
     double[] enc = {rightEnc.get(), leftEnc.get()};
     return enc;
   }
@@ -128,16 +128,18 @@ public class DriveTrain extends Subsystem {
     double[] enc = {rightEnc.getDistance(), leftEnc.getDistance()};
     return enc;
   }
-
+  */
   public DifferentialDrive getDrive(){
     return drive;
   }
 
+  /*
   public void resetEncoders(){
     rightEnc.reset();
     leftEnc.reset();
   }
-  
+  */
+
   public void calibrateIMU() {
     imu.calibrate();
   }

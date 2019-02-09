@@ -7,45 +7,30 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.subsystems.DriveTrain;
 
-public class ShiftSlow extends Command {
-  DriveTrain dt_s = DriveTrain.getInstance();
-  private boolean v = false;
-  
+/**
+ * Add your docs here.
+ */
+public class ShiftSlow extends InstantCommand {
+  /**
+   * Add your docs here.
+   */
+  boolean value;
+
   public ShiftSlow(boolean v) {
+    super();
+    requires(DriveTrain.getInstance());
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(dt_s);
-    this.v = v;
+    value = v;
   }
 
-  // Called just before this Command runs the first time
+  // Called once when the command executes
   @Override
   protected void initialize() {
+    DriveTrain.getInstance().setSlow(value);
   }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-  }
-
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return true;
-  }
-
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-    dt_s.setSlow(v);
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
 }

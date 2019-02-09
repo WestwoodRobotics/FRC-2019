@@ -43,7 +43,8 @@ public class DriveDistance extends Command {
       
         @Override
         public double pidGet() {
-          double[] dists = dt_s.getEncoderDist();
+          double[] dists = null;
+          //dists = dt_s.getEncoderDist();
           return (dists[0] + dists[1])/2;
         }
       
@@ -63,7 +64,7 @@ public class DriveDistance extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	dt_s.resetEncoders();
+    	//dt_s.resetEncoders();
     	pid.reset();
     	pid.enable();
     }

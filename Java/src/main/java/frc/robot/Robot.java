@@ -36,6 +36,8 @@ public class Robot extends TimedRobot{
 
   Compressor comp = new Compressor();
 
+  public static boolean cancelAuto = false;
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -52,8 +54,13 @@ public class Robot extends TimedRobot{
     DriveTrain.getInstance();
     OI.getInstance();
 
+    CameraServer.getInstance().startAutomaticCapture();
+    CameraServer.getInstance().startAutomaticCapture();
+
     DriveTrain.getInstance().resetIMU();
     DriveTrain.getInstance().calibrateIMU();
+
+    this.cancelAuto = false;
   }
 
   /**
@@ -123,6 +130,11 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    if(cancelAuto && isAutonomous()){
+      m_autonomousCommand.cancel();
+      Scheduler.getInstance().removeAll();
+      teleopInit();
+    }
   }
 
   @Override

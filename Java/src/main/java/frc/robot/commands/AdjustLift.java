@@ -7,23 +7,30 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.PistonLift;
 
-public class AdjustLift extends Command {
-  
+/**
+ * Add your docs here.
+ */
+public class AdjustLift extends InstantCommand {
+  /**
+   * Add your docs here.
+   */
   public PistonLift pl = PistonLift.getInstance();
   
-  private boolean frontSol;
-  private boolean backSol;
+  private boolean frontSol = false;
+  private boolean backSol = false;
 
   private RobotMap.LiftMode mode = RobotMap.LiftMode.SET;
 
   public AdjustLift(RobotMap.LiftMode mode, boolean frontSol, boolean backSol) {
+    super();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(pl);
+
+    requires(PistonLift.getInstance());
 
     this.mode = mode;
 
@@ -37,25 +44,9 @@ public class AdjustLift extends Command {
     this.mode = mode;
   }
 
-  // Called just before this Command runs the first time
+  // Called once when the command executes
   @Override
   protected void initialize() {
-  }
-
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-  }
-
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return true;
-  }
-
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
     if(mode == RobotMap.LiftMode.SET){
       pl.setFrontSol(frontSol);
       pl.setBackSol(backSol);
@@ -68,9 +59,4 @@ public class AdjustLift extends Command {
     }
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
 }

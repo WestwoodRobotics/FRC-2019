@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.AdjustArm;
@@ -26,11 +25,11 @@ public class Arm extends Subsystem {
   private WPI_TalonSRX armMotor1 = new WPI_TalonSRX(RobotMap.armTalon1Port),
                        armMotor2 = new WPI_TalonSRX(RobotMap.armTalon2Port);
 
-  private SpeedControllerGroup group = new SpeedControllerGroup(armMotor1, armMotor2);
-
   public Arm(){
     armMotor1.setNeutralMode(NeutralMode.Brake);
     armMotor2.setNeutralMode(NeutralMode.Brake);
+    
+    armMotor2.set(ControlMode.Follower, RobotMap.armTalon1Port);
   }
 
   @Override
@@ -41,11 +40,11 @@ public class Arm extends Subsystem {
   }
 
   public void setArm(double value){
-    group.set(value);
+    armMotor1.set(value);
   }
 
   public void brakeArm(){
-    group.stopMotor();
+    armMotor1.stopMotor();
   }
 
   private static Arm instance;

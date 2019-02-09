@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -49,7 +51,6 @@ public class TurnTo extends Command {
     }, d -> dt_s.turnRate(d));
 
     SmartDashboard.putData("PID Controller", pid);
-
 
     pid.setInputRange(-720, 720);
     pid.setOutputRange(-0.5, 0.5);

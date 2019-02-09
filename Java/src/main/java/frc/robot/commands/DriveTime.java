@@ -27,7 +27,7 @@ public class DriveTime extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    dt_s.resetEncoders();
+    //dt_s.resetEncoders();
   }
 
   // Called repeatedly when this Command is scheduled to run

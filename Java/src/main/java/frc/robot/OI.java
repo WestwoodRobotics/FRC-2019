@@ -76,6 +76,8 @@ public class OI {
   Button armLower = new JoystickButton(lJoy, 13);
   Button armRaise = new JoystickButton(lJoy, 12);
 
+  Button cancelAuto = new JoystickButton(lJoy, 14);
+
   public OI() {
     rJoyTrigger.whenPressed(new ShiftSlow(true));
     rJoyTrigger.whenReleased(new ShiftSlow(false));

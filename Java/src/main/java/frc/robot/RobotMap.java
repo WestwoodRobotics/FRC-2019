@@ -44,7 +44,8 @@ public class RobotMap {
   public static final int hatchGrabberSolPort = 0;
 
   public static final int armTalon1Port = 0,
-                          armTalon2Port = 6;
+                          armTalon2Port = 6,
+                          armEncoder = 0;
 
   public enum Cargo{
     OFF,
