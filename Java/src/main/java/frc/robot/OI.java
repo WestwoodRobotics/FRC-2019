@@ -9,15 +9,20 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap.Cargo;
 import frc.robot.RobotMap.LiftMode;
+import frc.robot.RobotMap.Arm;
+
 import frc.robot.commands.AdjustArm;
 import frc.robot.commands.AdjustLift;
 import frc.robot.commands.GrabHatch;
 import frc.robot.commands.MoveCargo;
 import frc.robot.commands.ShiftSlow;
+import frc.robot.commands.ToggleArmMode;
 
 
 /**
@@ -54,14 +59,14 @@ public class OI {
   // button.whenReleased(new ExampleCommand());
 
   //Ports
-  public static final int xBoxPort = 0;
+  public static final int logitechPort = 0;
   public static final int rJoyPort = 1;
   public static final int lJoyPort = 2;
 
   //Controllers accessing the ports
   Joystick rJoy = new Joystick(rJoyPort);
   Joystick lJoy = new Joystick(lJoyPort);
-  
+
   Button rJoyTrigger = new JoystickButton(rJoy, 1);
   Button lJoyTrigger = new JoystickButton(lJoy, 1);
   
@@ -76,38 +81,77 @@ public class OI {
   Button armLower = new JoystickButton(lJoy, 13);
   Button armRaise = new JoystickButton(lJoy, 12);
 
+  Button armPowerRaise = new JoystickButton(lJoy, 11);
+
   Button cancelAuto = new JoystickButton(lJoy, 14);
 
+  //Second Driver
+  Joystick logitech = new Joystick(logitechPort);
+
+  Button logitechA = new JoystickButton(logitech, 1),
+         logitechB = new JoystickButton(logitech, 2),
+         logitechX = new JoystickButton(logitech, 3),
+         logitechY = new JoystickButton(logitech, 4),
+
+         logitechLBumper = new JoystickButton(logitech, 5),
+         logitechRBumper = new JoystickButton(logitech, 6),
+
+         logitechRJoyClick = new JoystickButton(logitech, 10),
+         logitechLJoyClick = new JoystickButton(logitech, 9);
+
   public OI() {
+    //Slow Mode (First Driver)
     rJoyTrigger.whenPressed(new ShiftSlow(true));
     rJoyTrigger.whenReleased(new ShiftSlow(false));
 
     lJoyTrigger.whenPressed(new ShiftSlow(true));
     lJoyTrigger.whenReleased(new ShiftSlow(false));
 
-    rightR.whenPressed(new AdjustLift(LiftMode.TOGGLE_FRONT));
-    rightL.whenPressed(new AdjustLift(LiftMode.TOGGLE_BACK));
+    //First Driver Overrides
     rightLower.whenPressed(new GrabHatch(true));
 
-    leftR.whenPressed(new MoveCargo(Cargo.OUT));
-    leftR.whenReleased(new MoveCargo(Cargo.OFF));
+    //leftR.whenPressed(new MoveCargo(Cargo.OUT));
+    //leftR.whenReleased(new MoveCargo(Cargo.OFF));
     
-    leftL.whenPressed(new MoveCargo(Cargo.IN));
-    leftL.whenReleased(new MoveCargo(Cargo.OFF));
+    //leftL.whenPressed(new MoveCargo(Cargo.IN));
+    //leftL.whenReleased(new MoveCargo(Cargo.OFF));
 
-    armLower.whenPressed(new AdjustArm(RobotMap.Arm.UP));
-    armLower.whenReleased(new AdjustArm(RobotMap.Arm.OFF));
+    //armLower.whenPressed(new AdjustArm(Arm.DOWN));
+    //armLower.whenReleased(new AdjustArm(Arm.OFF));
 
-    armRaise.whenPressed(new AdjustArm(RobotMap.Arm.DOWN));
-    armRaise.whenReleased(new AdjustArm(RobotMap.Arm.OFF));
+    //armRaise.whenPressed(new AdjustArm(Arm.UP));
+    //armRaise.whenReleased(new AdjustArm(Arm.OFF));
+
+    //armPowerRaise.whenPressed(new ToggleArmMode());
+
+    //Second Driver Controls
+    logitechY.whenPressed(new AdjustArm(Arm.UP));
+    logitechY.whenReleased(new AdjustArm(Arm.OFF));
+
+    logitechA.whenPressed(new AdjustArm(Arm.DOWN));
+    logitechA.whenReleased(new AdjustArm(Arm.OFF));
+    
+    logitechX.whenPressed(new GrabHatch(true));
+    
+    logitechRBumper.whenPressed(new AdjustLift(LiftMode.TOGGLE_BACK));
+
+    logitechLBumper.whenPressed(new AdjustLift(LiftMode.TOGGLE_FRONT));
+
   }
 
   public double getLJoyY(){
     return -lJoy.getY();
+    //return 0;
   }
 
   public double getRJoyY(){
     return -rJoy.getY();
+    //return 0;
+  }
+
+  public double getLogitechLJoyY(){
+    SmartDashboard.putNumber("Joystick Value", logitech.getRawAxis(1));
+    return logitech.getRawAxis(1);
   }
 
   //Provides for one singular operator interface across all files

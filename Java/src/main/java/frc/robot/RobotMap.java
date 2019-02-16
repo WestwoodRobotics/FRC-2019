@@ -27,8 +27,8 @@ public class RobotMap {
   public static final double deadbandLimit = 0.05;
   public static final double driveTimeSpeed = 0.4;
 
-  public static final int liftSolFrontChan = 3,
-                          liftSolBackChan = 5;
+  public static final int liftSolFrontChan = 2,
+                          liftSolBackChan = 1;
                           
   public static final int leftTalon1Port = 1,
                           leftTalon2Port = 2,
@@ -54,7 +54,7 @@ public class RobotMap {
   }
 
   public enum LiftMode{
-    SET,
+    OFF,
     TOGGLE_FRONT,
     TOGGLE_BACK;
   }

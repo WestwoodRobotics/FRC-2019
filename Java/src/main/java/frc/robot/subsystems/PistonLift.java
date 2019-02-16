@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.AdjustLift;
 
@@ -26,34 +27,22 @@ public class PistonLift extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new AdjustLift(RobotMap.LiftMode.SET, false, false));
+    setDefaultCommand(new AdjustLift(RobotMap.LiftMode.OFF));
+  }
 
-    solFront.set(false);
-    solBack.set(false);
+  public PistonLift(){
+    //solFront.set(false);
+    //solBack.set(false);
   }
 
   public void toggleFrontSol(){
     solFront.set(!solFront.get());
+    SmartDashboard.putBoolean("Front Solenoid", solFront.get());
   }
 
   public void toggleBackSol(){
     solBack.set(!solBack.get());
-  }
-
-  public void setFrontSol(boolean value){
-    solFront.set(value);
-  }
-
-  public void setBackSol(boolean value){
-    solBack.set(value);
-  }
-
-  public boolean getFrontSol(){
-    return solFront.get();  
-  }
-
-  public boolean getBackSol(){
-    return solBack.get(); 
+    SmartDashboard.putBoolean("Back Solenoid", solBack.get());
   }
 
   private static PistonLift instance;

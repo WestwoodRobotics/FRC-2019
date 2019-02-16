@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Arm;
 
@@ -34,12 +33,15 @@ public class AdjustArm extends Command {
   @Override
   protected void execute() {
     if(v == RobotMap.Arm.UP){
-      arm.setArm(-.35);
+      arm.setArm(.5);
     }
     else if(v == RobotMap.Arm.DOWN){
-      arm.setArm(.35);
+      if(arm.getPowerMode() == true)
+        arm.setArm(-.4);
+      else
+        arm.setArm(0);
     }
-    else{
+    else if(v == RobotMap.Arm.OFF){
       arm.brakeArm();
     }
   }

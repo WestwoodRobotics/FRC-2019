@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.CargoShooter;
 
@@ -31,19 +32,22 @@ public class MoveCargo extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(c == RobotMap.Cargo.IN){
+    if(c == RobotMap.Cargo.IN || OI.getInstance().getLogitechLJoyY() < -0.2){
       cs.pullBall();
     }
-    else if(c == RobotMap.Cargo.OUT){
+    else if(c == RobotMap.Cargo.OUT || OI.getInstance().getLogitechLJoyY() > 0.2){
       cs.pushBall();
+    }
+    else{
+      cs.stopBall();
     }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(c == RobotMap.Cargo.OFF)
-      return true;
+    //if(c == RobotMap.Cargo.OFF)
+      //return true;
     return false;
   }
 

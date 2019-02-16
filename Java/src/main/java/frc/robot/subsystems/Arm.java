@@ -25,6 +25,8 @@ public class Arm extends Subsystem {
   private WPI_TalonSRX armMotor1 = new WPI_TalonSRX(RobotMap.armTalon1Port),
                        armMotor2 = new WPI_TalonSRX(RobotMap.armTalon2Port);
 
+  private boolean powerMode = false;
+  
   public Arm(){
     armMotor1.setNeutralMode(NeutralMode.Brake);
     armMotor2.setNeutralMode(NeutralMode.Brake);
@@ -44,7 +46,23 @@ public class Arm extends Subsystem {
   }
 
   public void brakeArm(){
-    armMotor1.stopMotor();
+    if(!powerMode)
+      armMotor1.set(.2);
+    else
+      armMotor1.set(0);
+    //armMotor1.stopMotor();
+  }
+
+  public void togglePowerMode(){
+    powerMode = !powerMode;
+  }
+
+  public boolean getPowerMode(){
+    return powerMode;
+  }
+
+  public void setPowerMode(boolean powerMode){
+    this.powerMode = powerMode;
   }
 
   private static Arm instance;

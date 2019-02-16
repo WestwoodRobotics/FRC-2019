@@ -28,6 +28,10 @@ public class HatchGrabber extends Subsystem {
     setDefaultCommand(new GrabHatch(false));
   }
 
+  public HatchGrabber(){
+    hatchSol.set(false);
+  }
+
   public void toggle(){
     hatchSol.set(!hatchSol.get());
   }

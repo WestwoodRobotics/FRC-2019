@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.RobotController;
 
 import frc.robot.commands.auto.ExampleAuto;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.CargoShooter;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchGrabber;
@@ -36,8 +37,6 @@ public class Robot extends TimedRobot{
 
   Compressor comp = new Compressor();
 
-  public static boolean cancelAuto = false;
-
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -56,11 +55,8 @@ public class Robot extends TimedRobot{
 
     CameraServer.getInstance().startAutomaticCapture();
     CameraServer.getInstance().startAutomaticCapture();
-
-    DriveTrain.getInstance().resetIMU();
-    DriveTrain.getInstance().calibrateIMU();
-
-    this.cancelAuto = false;
+    
+    Arm.getInstance().setPowerMode(false);
   }
 
   /**
@@ -76,9 +72,13 @@ public class Robot extends TimedRobot{
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
     SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
 
+    SmartDashboard.putBoolean("Arm Power Mode On", Arm.getInstance().getPowerMode());
+
     SmartDashboard.putBoolean("PID Ended", DriveTrain.getInstance().pidEnded);
     
     SmartDashboard.putData("Drive", DriveTrain.getInstance().getDrive());
+
+    comp.getPressureSwitchValue();
   }
 
   /**
@@ -130,11 +130,6 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    if(cancelAuto && isAutonomous()){
-      m_autonomousCommand.cancel();
-      Scheduler.getInstance().removeAll();
-      teleopInit();
-    }
   }
 
   @Override
@@ -148,6 +143,10 @@ public class Robot extends TimedRobot{
     }
 
     DriveTrain.getInstance().setDeadband(RobotMap.deadbandLimit);
+
+    HatchGrabber.getInstance();
+    PistonLift.getInstance();
+    CargoShooter.getInstance();
   }
 
   /**
@@ -156,8 +155,6 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-
-    System.out.println(DriveTrain.getInstance().getZHeading());
     SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
   }
 

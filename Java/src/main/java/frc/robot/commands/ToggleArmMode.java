@@ -8,39 +8,26 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import frc.robot.OI;
-import frc.robot.RobotMap;
-import frc.robot.subsystems.PistonLift;
+import frc.robot.subsystems.Arm;
 
 /**
  * Add your docs here.
  */
-public class AdjustLift extends InstantCommand {
+public class ToggleArmMode extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public PistonLift pl = PistonLift.getInstance();
-
-  private RobotMap.LiftMode mode;
-
-  public AdjustLift(RobotMap.LiftMode mode) {
+  public ToggleArmMode() {
     super();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(PistonLift.getInstance());
-
-    this.mode = mode;
+    requires(Arm.getInstance());
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    if(mode.equals(RobotMap.LiftMode.TOGGLE_FRONT)){
-      pl.toggleFrontSol();
-    }
-    else if(mode.equals(RobotMap.LiftMode.TOGGLE_BACK)){
-      pl.toggleBackSol();
-    }
+    Arm.getInstance().togglePowerMode();
   }
 
 }

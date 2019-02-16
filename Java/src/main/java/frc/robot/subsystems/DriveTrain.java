@@ -73,9 +73,8 @@ public class DriveTrain extends Subsystem {
     setDeadband(0.05);
 
     //Calibrate and reset the IMU
-    this.calibrateIMU();
-    this.resetIMU();
-    
+    imu.reset();
+    imu.calibrate();
   }
 
   //Default command when the drivetrain is created
@@ -140,20 +139,12 @@ public class DriveTrain extends Subsystem {
   }
   */
 
-  public void calibrateIMU() {
+  public void calibrateIMU(){
     imu.calibrate();
   }
-  
-  public void resetIMU() {
+
+  public void resetIMU(){
     imu.reset();
-  }
-
-  public void calibrateGyro(){
-    //gyro.calibrate();
-  }
-
-  public void resetGyro(){
-    //gyro.reset();
   }
 
   public double getAngle(){
