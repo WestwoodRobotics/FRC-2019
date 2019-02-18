@@ -38,43 +38,40 @@ public class Robot extends TimedRobot{
   Compressor comp = new Compressor();
 
   /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
+   * This function is run when the robot is first started up and is
+   * used to initialize the: Operator Interface, Drive Train, and Arm.
+   *
+   * It also starts the camera captures and compressor compression.
    */
   @Override
   public void robotInit() {
 
     comp.setClosedLoopControl(true);
 
-    m_chooser.setDefaultOption("Default Auto", new ExampleAuto());
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
-    
     DriveTrain.getInstance();
     OI.getInstance();
+    Arm.getInstance().setPowerMode(false);
 
     CameraServer.getInstance().startAutomaticCapture();
-    CameraServer.getInstance().startAutomaticCapture();
-    
-    Arm.getInstance().setPowerMode(false);
   }
 
   /**
-   * This function is called every robot packet, no matter the mode. Use
-   * this for items like diagnostics that you want ran during disabled,
-   * autonomous, teleoperated and test.
+   * This function is called every robot packet, no matter the mode. It is used
+   * for diagnostics and other displays on the drivetrain to notify the drivers
+   * of any potential issues.
    *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
+   * Diagnostics include: Voltage, Gyro, Power Mode for the Arm, Drivetrain
+   * Display, etc.
+   * 
+   * It also updates the stored compressor/pressure value.
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
-    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
+    SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage()); 
+    
+    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading()); 
 
     SmartDashboard.putBoolean("Arm Power Mode On", Arm.getInstance().getPowerMode());
-
-    SmartDashboard.putBoolean("PID Ended", DriveTrain.getInstance().pidEnded);
     
     SmartDashboard.putData("Drive", DriveTrain.getInstance().getDrive());
 
@@ -83,13 +80,18 @@ public class Robot extends TimedRobot{
 
   /**
    * This function is called once each time the robot enters Disabled mode.
-   * You can use it to reset any subsystem information you want to clear when
-   * the robot is disabled.
+   * We calibrate the IMU when the robot is disabled.
    */
   @Override
   public void disabledInit() {
     DriveTrain.getInstance().calibrateIMU();
   }
+
+  /**
+   * This function is called every robot packet when the robot is disabled.
+   * We make sure that the scheduler continues running. 
+   * 
+   */
 
   @Override
   public void disabledPeriodic() {
@@ -98,27 +100,15 @@ public class Robot extends TimedRobot{
 
   /**
    * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString code to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional commands to the
-   * chooser code above (like the commented example) or additional comparisons
-   * to the switch structure below with additional strings & commands.
+   * between different autonomous modes using the dashboard. This year, we will
+   * not be using autonomous during the robot game. However, it is still practical
+   * to have autonomous ready for testing.
+   * 
    */
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_chooser.getSelected();
 
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
     }
@@ -126,6 +116,8 @@ public class Robot extends TimedRobot{
 
   /**
    * This function is called periodically during autonomous.
+   * We make sure that the scheduler continues running. 
+   * 
    */
   @Override
   public void autonomousPeriodic() {
@@ -142,11 +134,14 @@ public class Robot extends TimedRobot{
       m_autonomousCommand.cancel();
     }
 
-    DriveTrain.getInstance().setDeadband(RobotMap.deadbandLimit);
+    // DriveTrain.getInstance().setDeadband(RobotMap.deadbandLimit); //Set deadband on drive controls
 
-    HatchGrabber.getInstance();
+    // Make instances of all four attachments: 
+    // HatchGrabber, PistonLift, CargoShooter, and Arm.
+    HatchGrabber.getInstance(); 
     PistonLift.getInstance();
     CargoShooter.getInstance();
+    Arm.getInstance();
   }
 
   /**
@@ -154,7 +149,8 @@ public class Robot extends TimedRobot{
    */
   @Override
   public void teleopPeriodic() {
-    Scheduler.getInstance().run();
+    Scheduler.getInstance().run(); //Keep running scheduler
+
     SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
   }
 

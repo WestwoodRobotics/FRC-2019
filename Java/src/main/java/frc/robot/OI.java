@@ -83,8 +83,6 @@ public class OI {
 
   Button armPowerRaise = new JoystickButton(lJoy, 11);
 
-  Button cancelAuto = new JoystickButton(lJoy, 14);
-
   //Second Driver
   Joystick logitech = new Joystick(logitechPort);
 
@@ -110,19 +108,22 @@ public class OI {
     //First Driver Overrides
     rightLower.whenPressed(new GrabHatch(true));
 
-    //leftR.whenPressed(new MoveCargo(Cargo.OUT));
-    //leftR.whenReleased(new MoveCargo(Cargo.OFF));
+    rightR.whenPressed(new AdjustLift(LiftMode.TOGGLE_FRONT));
+    rightL.whenPressed(new AdjustLift(LiftMode.TOGGLE_BACK));
+
+    leftR.whenPressed(new MoveCargo(Cargo.OUT));
+    leftR.whenReleased(new MoveCargo(Cargo.OFF));
     
-    //leftL.whenPressed(new MoveCargo(Cargo.IN));
-    //leftL.whenReleased(new MoveCargo(Cargo.OFF));
+    leftL.whenPressed(new MoveCargo(Cargo.IN));
+    leftL.whenReleased(new MoveCargo(Cargo.OFF));
 
-    //armLower.whenPressed(new AdjustArm(Arm.DOWN));
-    //armLower.whenReleased(new AdjustArm(Arm.OFF));
+    armLower.whenPressed(new AdjustArm(Arm.DOWN));
+    armLower.whenReleased(new AdjustArm(Arm.OFF));
 
-    //armRaise.whenPressed(new AdjustArm(Arm.UP));
-    //armRaise.whenReleased(new AdjustArm(Arm.OFF));
+    armRaise.whenPressed(new AdjustArm(Arm.UP));
+    armRaise.whenReleased(new AdjustArm(Arm.OFF));
 
-    //armPowerRaise.whenPressed(new ToggleArmMode());
+    armPowerRaise.whenPressed(new ToggleArmMode());
 
     //Second Driver Controls
     logitechY.whenPressed(new AdjustArm(Arm.UP));
@@ -133,6 +134,8 @@ public class OI {
     
     logitechX.whenPressed(new GrabHatch(true));
     
+    logitechB.whenPressed(new ToggleArmMode());
+
     logitechRBumper.whenPressed(new AdjustLift(LiftMode.TOGGLE_BACK));
 
     logitechLBumper.whenPressed(new AdjustLift(LiftMode.TOGGLE_FRONT));

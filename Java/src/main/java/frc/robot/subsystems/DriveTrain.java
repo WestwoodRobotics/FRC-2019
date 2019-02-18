@@ -50,8 +50,6 @@ public class DriveTrain extends Subsystem {
 
   private ADIS16448_IMU imu = new ADIS16448_IMU();
 
-  public boolean pidEnded = false; //Remove this later 
-
   public DriveTrain(){
     //Sets the second motor for both the left and right side to follow the first motor
     left2.set(ControlMode.Follower, RobotMap.leftTalon1Port);

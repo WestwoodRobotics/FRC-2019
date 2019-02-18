@@ -62,7 +62,6 @@ public class TurnTo extends Command {
     dt_s.resetIMU();		// reset gyros
     pid.reset();
     pid.enable();
-    dt_s.pidEnded = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -81,7 +80,6 @@ public class TurnTo extends Command {
   protected void end() {
     pid.disable();
     dt_s.stopWheels();
-    dt_s.pidEnded = true;
   }
 
   // Called when another command which requires one or more of the same
