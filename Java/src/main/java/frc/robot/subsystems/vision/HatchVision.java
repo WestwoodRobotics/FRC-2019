@@ -14,12 +14,11 @@ public class HatchVision {
   }
 
   public double getAngleFromHatch() {
-    Mat m = new Mat();
+    Mat img = new Mat();
     String cName = "USB Camera " + RobotMap.armCameraPort;
-    CameraServer.getInstance().getVideo(cName).grabFrame(m);
+    CameraServer.getInstance().getVideo(cName).grabFrame(img);
 
-    this.pipeline.process(m);
-    double angle = ImageProcessor.getHatchAngle(m, this.pipeline.findBlobsOutput(), true);
+    double ang = ImageProcessor.getHatchAngle(img, pipeline.largestContourOutput(), true);
 
     return angle;
   }

@@ -20,13 +20,16 @@ public class ImageProcessor {
     return (HATCH_WIDTH * HATCH_FOCAL_LENGTH) / perceived_width;
   }
 
-  public static Mat annotate(Mat img, MatOfKeyPoint blob) {
-    Mat outputImage = new Mat();
-
+  public static Mat annotate(Mat img, MatOfPoint cont) {
+    Rect r = Imgproc.boundingRect(cont);
+    
     Scalar sc = new Scalar(2, 254, 255);
-    Features2d.drawKeypoints(img, blob, outputImage, sc, Features2d.DRAW_RICH_KEYPOINTS); 
 
-    return outputImage;
+    Point p1 = new Point(r.x, r.y);
+    Point p2 = new Point(r.x + r.width, r.y + r.height);
+    Imgproc.rectangle(img, p1, p2, sc);
+
+    return img;
   }
 
   public static void displayImageToSmartDashboard(Mat img) {
@@ -35,24 +38,26 @@ public class ImageProcessor {
     outputStream.putFrame(img);
   }
 
-  public static double getHatchAngle(Mat img, MatOfKeyPoint blob, boolean debug) {
+  public static double getHatchAngle(Mat img, MatOfPoint contour, boolean debug) {
     if(blob.empty()) return 420;
 
-    System.out.println(blob);
-    Rect rect = Imgproc.boundingRect(blob);
+    System.out.println(contour);
+    Rect rect = Imgproc.boundingRect(contour);
     SmartDashboard.putNumber("Hatch Width", rect.width);
     
     double ppi = rect.width / HATCH_WIDTH;
 
     if(debug) {
-      displayImageToSmartDashboard(annotate(img, blob));
+      displayImageToSmartDashboard(annotate(img, contour));
     }
 
+    double ppi = rect.width / HATCH_WIDTH;
     double yDist = getHatchDistance(rect.width);
-    double xDist = ppi * Math.abs(img.width() / 2 - rect.width / 2);
+    double xDist = ppi * ((imgWidth / 2) - (rect.width / 2));
+
     SmartDashboard.putNumber("yDist of Hatch", yDist);
     SmartDashboard.putNumber("xDist of Hatch", xDist);
 
-    return Math.atan(yDist / xDist);
+    return Math.toDegrees(Math.atan(yDist / xDist));
   }
 }
