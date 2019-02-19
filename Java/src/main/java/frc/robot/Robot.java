@@ -49,7 +49,7 @@ public class Robot extends TimedRobot{
   public void robotInit() {
     CameraServer.getInstance().startAutomaticCapture();
     CameraServer.getInstance().startAutomaticCapture();
-
+    
     comp.setClosedLoopControl(true);
 
     DriveTrain.getInstance();
