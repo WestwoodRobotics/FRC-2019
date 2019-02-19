@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.PistonLift;
 

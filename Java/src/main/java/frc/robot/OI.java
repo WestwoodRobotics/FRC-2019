@@ -8,8 +8,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +21,7 @@ import frc.robot.commands.GrabHatch;
 import frc.robot.commands.MoveCargo;
 import frc.robot.commands.ShiftSlow;
 import frc.robot.commands.ToggleArmMode;
+import frc.robot.commands.TurnToHatch;
 
 
 /**
@@ -83,6 +82,8 @@ public class OI {
 
   Button armPowerRaise = new JoystickButton(lJoy, 11);
 
+  Button turnHatch = new JoystickButton(rJoy, 13);
+
   //Second Driver
   Joystick logitech = new Joystick(logitechPort);
 
@@ -125,6 +126,8 @@ public class OI {
 
     armPowerRaise.whenPressed(new ToggleArmMode());
 
+    turnHatch.whenPressed(new TurnToHatch());
+
     //Second Driver Controls
     logitechY.whenPressed(new AdjustArm(Arm.UP));
     logitechY.whenReleased(new AdjustArm(Arm.OFF));
@@ -153,7 +156,6 @@ public class OI {
   }
 
   public double getLogitechLJoyY(){
-    SmartDashboard.putNumber("Joystick Value", logitech.getRawAxis(1));
     return logitech.getRawAxis(1);
   }
 

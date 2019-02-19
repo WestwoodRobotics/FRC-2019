@@ -7,31 +7,43 @@
 
 package frc.robot.commands;
 
+import org.opencv.core.Mat;
+
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.HatchGrabber;
+import frc.robot.subsystems.vision.HatchVision;
 
 /**
  * Add your docs here.
  */
-public class GrabHatch extends InstantCommand {
+public class TurnToHatch extends InstantCommand {
   /**
    * Add your docs here.
    */
-  boolean value = false;
+  double value;
 
-  public GrabHatch(boolean v) {
+  public TurnToHatch() {
     super();
+    System.out.println("TurnTOHatch start");
+    
     requires(HatchGrabber.getInstance());
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-
-    value = v;
+ 
+    double degrees = HatchVision.getInstance().getAngleFromHatch();
+    SmartDashboard.putNumber("Angle Of Hatch From Robot", degrees);
+    
+    value = degrees;
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    if(value)
-      HatchGrabber.getInstance().toggle();
+    if(value == 420) return;
+
+    TurnTo turnTo = new TurnTo(value);
+
+    turnTo.execute();
+    turnTo.close();
   }
 }

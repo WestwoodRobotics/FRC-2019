@@ -31,18 +31,24 @@ public class PistonLift extends Subsystem {
   }
 
   public PistonLift(){
-    //solFront.set(false);
-    //solBack.set(false);
+    solFront.set(false);
+    solBack.set(false);
   }
 
   public void toggleFrontSol(){
     solFront.set(!solFront.get());
-    SmartDashboard.putBoolean("Front Solenoid", solFront.get());
   }
 
   public void toggleBackSol(){
     solBack.set(!solBack.get());
-    SmartDashboard.putBoolean("Back Solenoid", solBack.get());
+  }
+
+  public boolean getFrontSol(){
+    return solFront.get();
+  }
+
+  public boolean getBackSol(){
+    return solBack.get();
   }
 
   private static PistonLift instance;
