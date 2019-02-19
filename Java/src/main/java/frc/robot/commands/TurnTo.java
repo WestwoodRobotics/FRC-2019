@@ -18,18 +18,18 @@ public class TurnTo extends Command {
   
   public DriveTrain dt_s = DriveTrain.getInstance();
 
-  public static final double P = 1.5,
-                             I = 0,
-                             D = 2.9,
-                             absoluteTolerance = 0.6;
+  /*public static double P = 4,
+                       I = 3,
+                       D = 16,
+                       absoluteTolerance = 0.1;
     
-  private PIDController pid;
+  private PIDController pid;*/
 
   public TurnTo(double degrees) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(dt_s);
-    pid = new PIDController(P, I, D, new PIDSource() {
+    /*pid = new PIDController(P, I, D, new PIDSource() {
       PIDSourceType m_sourceType = PIDSourceType.kDisplacement;
 
       @Override
@@ -49,34 +49,46 @@ public class TurnTo extends Command {
     }, d -> dt_s.turnRate(d));
 
     pid.setInputRange(-720, 720);
-    pid.setOutputRange(-0.5, 0.5);
+    pid.setOutputRange(-0.2, 0.2);
     pid.setAbsoluteTolerance(absoluteTolerance);
-    pid.setSetpoint(degrees);
+    pid.setSetpoint(degrees);*/
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     dt_s.resetIMU();		// reset gyros
-    pid.reset();
-    pid.enable();
+    dt_s.resetIMU();		// reset gyros
+    dt_s.resetIMU();		// reset gyros
+    /*pid.reset();
+
+    P = SmartDashboard.getNumber("P", P);
+    I = SmartDashboard.getNumber("I", I);
+    D = SmartDashboard.getNumber("D", D);
+    
+    System.out.println(P);
+    System.out.println(I);
+    System.out.println(D);
+    
+    pid.enable();*/
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    dt_s.driveWheels(.1, -.1);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return pid.onTarget();
+    return Math.abs(90 - dt_s.getZHeading()) <= 2;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    pid.disable();
+    //pid.disable();
     dt_s.stopWheels();
   }
 
@@ -84,7 +96,6 @@ public class TurnTo extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    pid.disable();
     dt_s.stopWheels();
   }
 }
