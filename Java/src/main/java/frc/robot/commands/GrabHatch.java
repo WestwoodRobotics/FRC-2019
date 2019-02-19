@@ -34,5 +34,4 @@ public class GrabHatch extends InstantCommand {
     if(value)
       HatchGrabber.getInstance().toggle();
   }
-
 }

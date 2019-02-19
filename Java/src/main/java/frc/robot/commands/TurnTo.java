@@ -20,7 +20,7 @@ public class TurnTo extends Command {
 
   public static final double P = 1.5,
                              I = 0,
-                             D = 3.2,
+                             D = 2.9,
                              absoluteTolerance = 0.6;
     
   private PIDController pid;
@@ -29,7 +29,7 @@ public class TurnTo extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(dt_s);
-    pid = new PIDController(P, I, D, new PIDSource(){
+    pid = new PIDController(P, I, D, new PIDSource() {
       PIDSourceType m_sourceType = PIDSourceType.kDisplacement;
 
       @Override
@@ -47,8 +47,6 @@ public class TurnTo extends Command {
         return m_sourceType;
       }
     }, d -> dt_s.turnRate(d));
-
-    SmartDashboard.putData("PID Controller", pid);
 
     pid.setInputRange(-720, 720);
     pid.setOutputRange(-0.5, 0.5);

@@ -28,20 +28,23 @@ public class RobotMap {
 
   public static final double driveTimeSpeed = 0.4;
 
-  public static final int liftSolFrontChan = 2,
-                          liftSolBackChan = 1,
-                          hatchGrabberSolPort = 0;
+  public static final int liftSolBackChan = 0,
+                          hatchGrabberSolPort = 1,
+                          liftSolFrontChan = 2;
                           
-  public static final int leftTalon1Port = 1,
-                          leftTalon2Port = 2,
-                          rightTalon1Port = 4,
-                          rightTalon2Port = 5;
+                          
+  public static final int leftTalon1Port = 0,
+                          leftTalon2Port = 1,
+                          rightTalon1Port = 2,
+                          rightTalon2Port = 3;
 
-  public static final int cargoShooterTalonPort = 3;
+  public static final int armCameraPort = 0,
+                          chassisCameraPort = 1;
+                          
+  public static final int armTalon1Port = 4,
+                          armTalon2Port = 5;
 
-  public static final int armTalon1Port = 0,
-                          armTalon2Port = 6,
-                          armEncoder = 0;
+  public static final int cargoShooterTalonPort = 6;
 
   public enum Cargo{
     OFF,

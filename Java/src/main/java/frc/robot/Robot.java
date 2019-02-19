@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -16,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.RobotController;
 
-import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.CargoShooter;
 import frc.robot.subsystems.DriveTrain;
@@ -31,7 +31,6 @@ import frc.robot.subsystems.PistonLift;
  * project.
  */
 public class Robot extends TimedRobot{
-
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -45,14 +44,14 @@ public class Robot extends TimedRobot{
    */
   @Override
   public void robotInit() {
+    CameraServer.getInstance().startAutomaticCapture();
+    CameraServer.getInstance().startAutomaticCapture();
 
     comp.setClosedLoopControl(true);
 
     DriveTrain.getInstance();
     OI.getInstance();
     Arm.getInstance().setPowerMode(false);
-
-    CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**
@@ -67,13 +66,29 @@ public class Robot extends TimedRobot{
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage()); 
-    
     SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading()); 
 
-    SmartDashboard.putBoolean("Arm Power Mode On", Arm.getInstance().getPowerMode());
+    SmartDashboard.putBoolean("Power Lift", Arm.getInstance().getPowerMode());
     
     SmartDashboard.putData("Drive", DriveTrain.getInstance().getDrive());
+
+    String ballShootState = "OFF";
+    if(CargoShooter.getInstance().getBall() > 0)
+      ballShootState = "OUT";
+    else if(CargoShooter.getInstance().getBall() < 0)
+      ballShootState = "IN";
+    else
+      ballShootState = "OFF";
+    
+    SmartDashboard.putString("Cargo Shooter", ballShootState);
+
+    SmartDashboard.putString("Front Pistons", (PistonLift.getInstance().getFrontSol())?"ON":"OFF");
+
+    SmartDashboard.putString("Back Pistons", (PistonLift.getInstance().getBackSol())?"ON":"OFF");
+
+    SmartDashboard.putString("Hatch Grabber", (HatchGrabber.getInstance().getHatch())?"OPEN":"CLOSED");
+
+    SmartDashboard.putString("Speed", (DriveTrain.getInstance().getSlow())?"SLOW":"FAST");
 
     comp.getPressureSwitchValue();
   }
@@ -150,8 +165,6 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run(); //Keep running scheduler
-
-    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading());
   }
 
   /**

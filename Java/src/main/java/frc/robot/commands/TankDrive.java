@@ -40,12 +40,10 @@ public class TankDrive extends Command {
     if(!dt_s.getSlow()){
       leftSpd = Math.round(lJoyVal);
       rightSpd = Math.round(rJoyVal);
-      System.out.println("NOT SLOW MODE");
     }
     else if(dt_s.getSlow()){
       leftSpd = Math.round(lJoyVal)*.5;
       rightSpd = Math.round(rJoyVal)*.5;
-      System.out.println("SLOW MODE");
     }
     
     dt_s.driveWheels(leftSpd, rightSpd);
