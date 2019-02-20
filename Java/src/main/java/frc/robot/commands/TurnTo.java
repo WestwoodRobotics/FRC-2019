@@ -52,7 +52,7 @@ public class TurnTo extends Command {
     }, d -> dt_s.turnRate(d));
 
     pid.setInputRange(-720, 720);
-    pid.setOutputRange(-0.5, 0.5);
+    pid.setOutputRange(-0.2, 0.2);
     pid.setAbsoluteTolerance(absoluteTolerance);
     pid.setSetpoint(degrees);*/
   }
@@ -61,7 +61,18 @@ public class TurnTo extends Command {
   @Override
   protected void initialize() {
     dt_s.resetIMU();		// reset gyros
+    dt_s.resetIMU();		// reset gyros
+    dt_s.resetIMU();		// reset gyros
     /*pid.reset();
+
+    P = SmartDashboard.getNumber("P", P);
+    I = SmartDashboard.getNumber("I", I);
+    D = SmartDashboard.getNumber("D", D);
+    
+    System.out.println(P);
+    System.out.println(I);
+    System.out.println(D);
+    
     pid.enable();*/
   }
 
@@ -77,13 +88,13 @@ public class TurnTo extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    System.out.println(degrees - dt_s.getZHeading());
-    return Math.abs(degrees - dt_s.getZHeading()) < 2;
+    return Math.abs(90 - dt_s.getZHeading()) <= 2;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    //pid.disable();
     dt_s.stopWheels();
   }
 

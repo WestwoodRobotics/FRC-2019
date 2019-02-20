@@ -29,11 +29,11 @@ public class CargoShooter extends Subsystem {
     setDefaultCommand(new MoveCargo(RobotMap.Cargo.OFF));
   }
 
-  public void pushBall(){
+  public void pullBall(){
     shootMotor.set(-1);
   }
 
-  public void pullBall(){
+  public void pushBall(){
     shootMotor.set(1);
   }
 

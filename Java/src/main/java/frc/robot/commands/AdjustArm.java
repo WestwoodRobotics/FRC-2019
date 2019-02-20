@@ -40,6 +40,8 @@ public class AdjustArm extends Command {
         arm.setArm(-.3);
       else
         arm.setArm(0.1);
+      
+      //arm.setArm(-.3);
     }
     else if(v == RobotMap.Arm.OFF){
       arm.brakeArm();

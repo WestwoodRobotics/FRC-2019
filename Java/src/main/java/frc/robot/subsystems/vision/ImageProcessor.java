@@ -15,7 +15,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ImageProcessor {
-  private static final double HATCH_FOCAL_LENGTH = 736.0;
+  private static final double HATCH_FOCAL_LENGTH = 734.0;
   private static final double HATCH_WIDTH = 18.0;
 
   public static double getHatchDistance(double perceived_width) {
@@ -50,8 +50,11 @@ public class ImageProcessor {
     displayImageToSmartDashboard(annotate(img, contour));
 
     double ppi = rect.width / HATCH_WIDTH;
+    int rectCenter = (rect.x + rect.width) / 2;
+    int imgCenter = img.width() / 2;
+
     double yDist = getHatchDistance(rect.width);
-    double xDist = ((img.width() / 2) - (rect.width / 2)) / ppi;
+    double xDist = (imgCenter - rectCenter) / ppi;
 
     SmartDashboard.putNumber("yDist of Hatch", yDist);
     SmartDashboard.putNumber("xDist of Hatch", xDist);

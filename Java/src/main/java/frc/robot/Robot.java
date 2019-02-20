@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode;
-
+import frc.robot.commands.auto.ExampleAuto;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.CargoShooter;
 import frc.robot.subsystems.DriveTrain;
@@ -48,6 +48,10 @@ public class Robot extends TimedRobot{
    */
   @Override
   public void robotInit() {
+    m_chooser.setDefaultOption("Default Auto", new ExampleAuto());
+    // chooser.addOption("My Auto", new MyAutoCommand());
+    SmartDashboard.putData("Auto mode", m_chooser);
+
     CameraServer.getInstance().startAutomaticCapture();
     CameraServer.getInstance().startAutomaticCapture();
     
@@ -95,7 +99,9 @@ public class Robot extends TimedRobot{
 
     SmartDashboard.putString("Speed", (DriveTrain.getInstance().getSlow())?"SLOW":"FAST");
 
-    comp.getPressureSwitchValue();
+    SmartDashboard.putString("Pressure", (comp.getPressureSwitchValue())?"GOOD":"NOT ENOUGH");
+
+    
   }
 
   /**
