@@ -82,6 +82,8 @@ public class OI {
 
   Button armPowerRaise = new JoystickButton(lJoy, 11);
 
+  Button turnHatch = new JoystickButton(rJoy, 13);
+
   //Second Driver
   Joystick logitech = new Joystick(logitechPort);
 
@@ -123,6 +125,8 @@ public class OI {
     armRaise.whenReleased(new AdjustArm(Arm.OFF));
 
     armPowerRaise.whenPressed(new ToggleArmMode());
+
+    turnHatch.whenPressed(new TurnToHatch());
 
     //Second Driver Controls
     logitechY.whenPressed(new AdjustArm(Arm.UP));
