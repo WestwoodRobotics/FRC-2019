@@ -33,7 +33,7 @@ public class AdjustArm extends Command {
   @Override
   protected void execute() {
     if(v == RobotMap.Arm.UP){
-      arm.setArm(.4);
+      arm.setArm(.35);
     }
     else if(v == RobotMap.Arm.DOWN){
       if(arm.getPowerMode() == true)
