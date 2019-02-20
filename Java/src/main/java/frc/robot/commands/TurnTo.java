@@ -18,18 +18,21 @@ public class TurnTo extends Command {
   
   public DriveTrain dt_s = DriveTrain.getInstance();
 
-  public static final double P = 1.5,
+  private double degrees;
+
+  /*public static final double P = 1.5,
                              I = 0,
                              D = 2.9,
                              absoluteTolerance = 0.6;
     
   private PIDController pid;
-
+  */
   public TurnTo(double degrees) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(dt_s);
-    pid = new PIDController(P, I, D, new PIDSource() {
+    this.degrees = degrees;
+    /*pid = new PIDController(P, I, D, new PIDSource() {
       PIDSourceType m_sourceType = PIDSourceType.kDisplacement;
 
       @Override
@@ -51,32 +54,36 @@ public class TurnTo extends Command {
     pid.setInputRange(-720, 720);
     pid.setOutputRange(-0.5, 0.5);
     pid.setAbsoluteTolerance(absoluteTolerance);
-    pid.setSetpoint(degrees);
+    pid.setSetpoint(degrees);*/
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     dt_s.resetIMU();		// reset gyros
-    pid.reset();
-    pid.enable();
+    /*pid.reset();
+    pid.enable();*/
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(degrees > 0)
+      dt_s.driveWheels(.2, -.2);
+    else
+      dt_s.driveWheels(-.2, .2);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return pid.onTarget();
+    System.out.println(degrees - dt_s.getZHeading());
+    return Math.abs(degrees - dt_s.getZHeading()) < 2;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    pid.disable();
     dt_s.stopWheels();
   }
 
@@ -84,7 +91,6 @@ public class TurnTo extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    pid.disable();
     dt_s.stopWheels();
   }
 }
