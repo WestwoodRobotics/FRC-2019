@@ -18,17 +18,20 @@ public class TurnTo extends Command {
   
   public DriveTrain dt_s = DriveTrain.getInstance();
 
-  /*public static double P = 4,
-                       I = 3,
-                       D = 16,
-                       absoluteTolerance = 0.1;
-    
-  private PIDController pid;*/
+  private double degrees;
 
+  /*public static final double P = 1.5,
+                             I = 0,
+                             D = 2.9,
+                             absoluteTolerance = 0.6;
+    
+  private PIDController pid;
+  */
   public TurnTo(double degrees) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(dt_s);
+    this.degrees = degrees;
     /*pid = new PIDController(P, I, D, new PIDSource() {
       PIDSourceType m_sourceType = PIDSourceType.kDisplacement;
 
@@ -76,7 +79,10 @@ public class TurnTo extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    dt_s.driveWheels(.1, -.1);
+    if(degrees > 0)
+      dt_s.driveWheels(.2, -.2);
+    else
+      dt_s.driveWheels(-.2, .2);
   }
 
   // Make this return true when this Command no longer needs to run execute()

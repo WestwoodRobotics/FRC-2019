@@ -32,10 +32,10 @@ public class MoveCargo extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(c == RobotMap.Cargo.IN || OI.getInstance().getLogitechLJoyY() < -0.2){
+    if(c == RobotMap.Cargo.IN || OI.getInstance().getLogitechLJoyY() > 0.2){
       cs.pullBall();
     }
-    else if(c == RobotMap.Cargo.OUT || OI.getInstance().getLogitechLJoyY() > 0.2){
+    else if(c == RobotMap.Cargo.OUT || OI.getInstance().getLogitechLJoyY() < -0.2){
       cs.pushBall();
     }
     else{

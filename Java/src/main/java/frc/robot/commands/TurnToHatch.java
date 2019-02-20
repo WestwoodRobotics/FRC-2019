@@ -22,28 +22,25 @@ public class TurnToHatch extends InstantCommand {
   /**
    * Add your docs here.
    */
-  double value;
 
   public TurnToHatch() {
     super();
     System.out.println("TurnTOHatch start");
     
     requires(HatchGrabber.getInstance());
- 
-    double degrees = HatchVision.getInstance().getAngleFromHatch();
-    SmartDashboard.putNumber("Angle Of Hatch From Robot", degrees);
-    
-    value = degrees;
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    if(value == 420) return;
+    System.out.println("Turn to Hatch Init");
+    double degrees = HatchVision.getInstance().getAngleFromHatch();
+    SmartDashboard.putNumber("Hatch From Robot", degrees);
+    System.out.println("Degreees ::::: " + degrees);
 
-    TurnTo turnTo = new TurnTo(value);
+    TurnTo turnTo = new TurnTo(degrees - 90);
 
-    turnTo.execute();
+    turnTo.start();
     turnTo.close();
   }
 }
