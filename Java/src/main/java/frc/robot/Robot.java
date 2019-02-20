@@ -25,6 +25,7 @@ import frc.robot.subsystems.CargoShooter;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.HatchGrabber;
 import frc.robot.subsystems.PistonLift;
+import frc.robot.subsystems.vision.HatchVision;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -53,6 +54,7 @@ public class Robot extends TimedRobot{
     comp.setClosedLoopControl(true);
 
     DriveTrain.getInstance();
+    HatchVision.getInstance();
     OI.getInstance();
     Arm.getInstance().setPowerMode(false);
   }

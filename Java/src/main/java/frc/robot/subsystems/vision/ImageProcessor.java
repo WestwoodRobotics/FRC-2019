@@ -3,6 +3,8 @@ package frc.robot.subsystems.vision;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfKeyPoint;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.features2d.Features2d;
@@ -34,26 +36,22 @@ public class ImageProcessor {
 
   public static void displayImageToSmartDashboard(Mat img) {
     CvSource outputStream = CameraServer.getInstance().putVideo("Hatch Detect", img.width(), img.height());
-
+    
     outputStream.putFrame(img);
   }
 
   public static double getHatchAngle(Mat img, MatOfPoint contour, boolean debug) {
-    if(blob.empty()) return 420;
+    if(contour.empty()) return Math.random();
 
     System.out.println(contour);
     Rect rect = Imgproc.boundingRect(contour);
     SmartDashboard.putNumber("Hatch Width", rect.width);
-    
-    double ppi = rect.width / HATCH_WIDTH;
 
-    if(debug) {
-      displayImageToSmartDashboard(annotate(img, contour));
-    }
+    displayImageToSmartDashboard(annotate(img, contour));
 
     double ppi = rect.width / HATCH_WIDTH;
     double yDist = getHatchDistance(rect.width);
-    double xDist = ppi * ((imgWidth / 2) - (rect.width / 2));
+    double xDist = ((img.width() / 2) - (rect.width / 2)) / ppi;
 
     SmartDashboard.putNumber("yDist of Hatch", yDist);
     SmartDashboard.putNumber("xDist of Hatch", xDist);
