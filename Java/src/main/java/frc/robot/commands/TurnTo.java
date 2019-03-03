@@ -80,9 +80,11 @@ public class TurnTo extends Command {
   @Override
   protected void execute() {
     if(degrees > 0)
-      dt_s.driveWheels(.2, -.2);
+      dt_s.driveWheels(.18, -.18);
     else
-      dt_s.driveWheels(-.2, .2);
+      dt_s.driveWheels(-.18, .18);
+
+    System.out.println(Math.abs(90 - dt_s.getZHeading()));
   }
 
   // Make this return true when this Command no longer needs to run execute()

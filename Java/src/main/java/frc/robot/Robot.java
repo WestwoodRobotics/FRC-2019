@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -36,7 +37,7 @@ import frc.robot.subsystems.vision.HatchVision;
  */
 public class Robot extends TimedRobot{
   Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  //SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   Compressor comp = new Compressor();
 
@@ -48,9 +49,9 @@ public class Robot extends TimedRobot{
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", new ExampleAuto());
+    //m_chooser.setDefaultOption("Default Auto", new ExampleAuto());
     // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
+    //SmartDashboard.putData("Auto mode", m_chooser);
 
     CameraServer.getInstance().startAutomaticCapture();
     CameraServer.getInstance().startAutomaticCapture();
@@ -95,12 +96,9 @@ public class Robot extends TimedRobot{
 
     SmartDashboard.putString("Back Pistons", (PistonLift.getInstance().getBackSol())?"ON":"OFF");
 
-    SmartDashboard.putString("Hatch Grabber", (HatchGrabber.getInstance().getHatch())?"OPEN":"CLOSED");
+    SmartDashboard.putString("Hatch Grabber", (HatchGrabber.getInstance().getHatch().equals(Value.kForward))?"OPEN":"CLOSED");
 
     SmartDashboard.putString("Speed", (DriveTrain.getInstance().getSlow())?"SLOW":"FAST");
-
-    SmartDashboard.putString("Pressure", (comp.getPressureSwitchValue())?"GOOD":"NOT ENOUGH");
-
     
   }
 
@@ -133,7 +131,7 @@ public class Robot extends TimedRobot{
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    //m_autonomousCommand = m_chooser.getSelected();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();

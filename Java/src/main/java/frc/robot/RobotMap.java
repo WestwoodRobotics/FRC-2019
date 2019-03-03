@@ -44,6 +44,9 @@ public class RobotMap {
   public static final int armTalon1Port = 4,
                           armTalon2Port = 5;
 
+  public static final int encoderForwardLimit = 82135,  //CHANGE THIS
+                          encoderBackwardLimit = 2789;
+
   public static final int cargoShooterTalonPort = 6;
 
   public enum Cargo{

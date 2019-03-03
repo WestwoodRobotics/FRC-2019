@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Arm;
 
@@ -32,18 +33,17 @@ public class AdjustArm extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(v == RobotMap.Arm.UP){
-      arm.setArm(.4);
+    if(v == RobotMap.Arm.UP/* || OI.getInstance().getZRotate() > .75*/){
+      arm.setArmSpeed(.75);
     }
-    else if(v == RobotMap.Arm.DOWN){
-      if(arm.getPowerMode() == true)
-        arm.setArm(-.3);
+    else if(v == RobotMap.Arm.DOWN/* || OI.getInstance().getZRotate() < -.75*/){
+      if(arm.getPowerMode())
+        arm.setArmSpeed(-.6);
       else
-        arm.setArm(0.1);
-      
-      //arm.setArm(-.3);
+        arm.setArmSpeed(-.2);
+      //arm.setArmSpeed(-.3);
     }
-    else if(v == RobotMap.Arm.OFF){
+    else if(v == RobotMap.Arm.OFF/* || (OI.getInstance().getZRotate() < .75 && OI.getInstance().getZRotate() > -.75)*/){
       arm.brakeArm();
     }
   }
@@ -51,7 +51,7 @@ public class AdjustArm extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (v == RobotMap.Arm.OFF);
+    return false;
   }
 
   // Called once after isFinished returns true

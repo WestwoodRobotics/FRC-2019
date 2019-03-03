@@ -8,6 +8,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.RobotMap;
 import frc.robot.commands.*;
 
 public class ExampleAuto extends CommandGroup {
@@ -31,8 +32,5 @@ public class ExampleAuto extends CommandGroup {
     // e.g. if Command1 requires chassis, and Command2 requires arm,
     // a CommandGroup containing them would require both the chassis and the
     // arm.
-    addSequential(new ToggleArmMode());
-    TurnTo t = new TurnTo(90);
-    addSequential(t);
   }
 }

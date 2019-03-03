@@ -19,7 +19,8 @@ public class HatchVision {
   public void serveHatchImage() {
     new Thread(() -> {
       CameraServer.getInstance().getVideo(cName).grabFrame(hatchImg);
-      CvSource outputStream = CameraServer.getInstance().putVideo("Hatch Img", hatchImg.width(), hatchImg.height());
+      CvSource outputStream = CameraServer.getInstance().putVideo(
+        "Hatch Img", hatchImg.width(), hatchImg.height());
       
       while(!Thread.interrupted()) {
         System.out.println("Putting frame");

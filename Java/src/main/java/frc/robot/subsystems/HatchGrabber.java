@@ -7,7 +7,9 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.GrabHatch;
@@ -19,7 +21,7 @@ public class HatchGrabber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private Solenoid hatchSol = new Solenoid(RobotMap.hatchGrabberSolPort);
+  private DoubleSolenoid hatchSol = new DoubleSolenoid(1, 3); 
 
   @Override
   public void initDefaultCommand() {
@@ -29,14 +31,17 @@ public class HatchGrabber extends Subsystem {
   }
 
   public HatchGrabber(){
-    hatchSol.set(false);
+    hatchSol.set(Value.kReverse);
   }
 
   public void toggle(){
-    hatchSol.set(!hatchSol.get());
+    if(hatchSol.get().equals(Value.kForward))
+      hatchSol.set(Value.kReverse);
+    else if(hatchSol.get().equals(Value.kReverse))
+      hatchSol.set(Value.kForward);
   }
 
-  public boolean getHatch(){
+  public Value getHatch(){
     return hatchSol.get();
   }
 

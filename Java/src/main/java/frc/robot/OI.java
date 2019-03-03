@@ -98,13 +98,22 @@ public class OI {
          logitechRJoyClick = new JoystickButton(logitech, 10),
          logitechLJoyClick = new JoystickButton(logitech, 9);
 
+  //Second second driver
+  Joystick throttle = new Joystick(logitechPort);
+
+  Button frontPiston = new JoystickButton(throttle, 2),
+         backPiston = new JoystickButton(throttle, 3),
+         hatch = new JoystickButton(throttle, 5),
+         powerLift = new JoystickButton(throttle, 1);
+
+  
   public OI() {
     //Slow Mode (First Driver)
-    rJoyTrigger.whenPressed(new ShiftSlow(true));
-    rJoyTrigger.whenReleased(new ShiftSlow(false));
+    rJoyTrigger.whenPressed(new ShiftSlow(false));
+    rJoyTrigger.whenReleased(new ShiftSlow(true));
 
-    lJoyTrigger.whenPressed(new ShiftSlow(true));
-    lJoyTrigger.whenReleased(new ShiftSlow(false));
+    lJoyTrigger.whenPressed(new ShiftSlow(false));
+    lJoyTrigger.whenReleased(new ShiftSlow(true));
 
     //First Driver Overrides
     rightLower.whenPressed(new GrabHatch(true));
@@ -126,7 +135,7 @@ public class OI {
 
     armPowerRaise.whenPressed(new ToggleArmMode());
 
-    turnHatch.whenPressed(new TurnToHatch());
+    //turnHatch.whenPressed(new TurnToHatch());
 
     //Second Driver Controls
     logitechY.whenPressed(new AdjustArm(Arm.UP));
@@ -142,22 +151,26 @@ public class OI {
     logitechRBumper.whenPressed(new AdjustLift(LiftMode.TOGGLE_BACK));
 
     logitechLBumper.whenPressed(new AdjustLift(LiftMode.TOGGLE_FRONT));
-
   }
 
   public double getLJoyY(){
     return -lJoy.getY();
     //return 0;
-  }
+  } 
 
   public double getRJoyY(){
     return -rJoy.getY();
     //return 0;
-  }
+  } 
 
   public double getLogitechLJoyY(){
     return logitech.getRawAxis(1);
+    //return -throttle.getRawAxis(2);
   }
+
+  /*public double getZRotate(){
+    return -throttle.getRawAxis(5);
+  }*/
 
   //Provides for one singular operator interface across all files
   private static OI instance;
