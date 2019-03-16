@@ -39,22 +39,24 @@ public class Arm extends Subsystem {
     armMotor1.setNeutralMode(NeutralMode.Brake);
     armMotor2.setNeutralMode(NeutralMode.Brake);;
 
+    
+
     powerMode = false;
 
-    /*armMotor1.configFactoryDefault();
+    /*armMotor2.configFactoryDefault();
     
-    armMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+    armMotor2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 
-    armMotor1.configReverseSoftLimitThreshold(RobotMap.encoderBackwardLimit);
-    armMotor1.configReverseSoftLimitEnable(true);
+    armMotor2.configReverseSoftLimitThreshold(RobotMap.encoderBackwardLimit);
+    armMotor2.configReverseSoftLimitEnable(true);
 
-    armMotor1.config_kP(0, kP, 0); 
-    armMotor1.config_kI(0, kI, 0); 
-    armMotor1.config_kD(0, kD, 0);
+    armMotor2.config_kP(0, kP, 0); 
+    armMotor2.config_kI(0, kI, 0); 
+    armMotor2.config_kD(0, kD, 0);
 
-    armMotor1.configAllowableClosedloopError(0, tolerance, 0);
+    armMotor2.configAllowableClosedloopError(0, tolerance, 0);
 
-    armMotor1.selectProfileSlot(0, 0);
+    armMotor2.selectProfileSlot(0, 0);
     
     resetEncoder();*/
   }
@@ -72,11 +74,11 @@ public class Arm extends Subsystem {
   
 
   public int getEncoder(){
-    return armMotor1.getSensorCollection().getQuadraturePosition();
+    return armMotor2.getSensorCollection().getQuadraturePosition();
   }
 
   public static void resetEncoder(){
-    armMotor1.getSensorCollection().setPulseWidthPosition(0, 0);
+    armMotor2.getSensorCollection().setPulseWidthPosition(0, 0);
   }
 
   public boolean onTarget(int targetPos){

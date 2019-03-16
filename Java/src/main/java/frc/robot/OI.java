@@ -19,9 +19,11 @@ import frc.robot.commands.AdjustArm;
 import frc.robot.commands.AdjustLift;
 import frc.robot.commands.GrabHatch;
 import frc.robot.commands.MoveCargo;
+import frc.robot.commands.ReverseDrive;
 import frc.robot.commands.ShiftSlow;
 import frc.robot.commands.ToggleArmMode;
 import frc.robot.commands.TurnToHatch;
+import frc.robot.subsystems.DriveTrain;
 
 
 /**
@@ -82,7 +84,7 @@ public class OI {
 
   Button armPowerRaise = new JoystickButton(lJoy, 11);
 
-  Button turnHatch = new JoystickButton(rJoy, 13);
+  Button reverse = new JoystickButton(rJoy, 13);
 
   //Second Driver
   Joystick logitech = new Joystick(logitechPort);
@@ -135,7 +137,7 @@ public class OI {
 
     armPowerRaise.whenPressed(new ToggleArmMode());
 
-    //turnHatch.whenPressed(new TurnToHatch());
+    reverse.whenPressed(new ReverseDrive());
 
     //Second Driver Controls
     logitechY.whenPressed(new AdjustArm(Arm.UP));

@@ -58,7 +58,7 @@ public class Robot extends TimedRobot{
     
     comp.setClosedLoopControl(true);
 
-    DriveTrain.getInstance();
+    DriveTrain.getInstance()/*.setReversed(false)*/;
     HatchVision.getInstance();
     OI.getInstance();
     Arm.getInstance().setPowerMode(false);
@@ -100,6 +100,7 @@ public class Robot extends TimedRobot{
 
     SmartDashboard.putString("Speed", (DriveTrain.getInstance().getSlow())?"SLOW":"FAST");
     
+    //SmartDashboard.putString("Reversed?", (DriveTrain.getInstance().getReversed())?"NOT REVERSED":"REVERSED");
   }
 
   /**
@@ -133,9 +134,9 @@ public class Robot extends TimedRobot{
   public void autonomousInit() {
     //m_autonomousCommand = m_chooser.getSelected();
 
-    if (m_autonomousCommand != null) {
+    /*if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
-    }
+    }*/
   }
 
   /**
@@ -154,9 +155,9 @@ public class Robot extends TimedRobot{
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
+    /*if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
-    }
+    }*/
 
     // DriveTrain.getInstance().setDeadband(RobotMap.deadbandLimit); //Set deadband on drive controls
 

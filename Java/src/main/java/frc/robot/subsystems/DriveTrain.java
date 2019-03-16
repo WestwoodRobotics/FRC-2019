@@ -41,6 +41,8 @@ public class DriveTrain extends Subsystem {
   //private Encoder rightEnc = new Encoder(RobotMap.rightEncA, RobotMap.rightEncB, false, Encoder.EncodingType.k1X);
   //private Encoder leftEnc = new Encoder(RobotMap.leftEncA, RobotMap.leftEncB, false, Encoder.EncodingType.k1X);
 
+  private boolean reversed = false;
+
   private boolean squaredInputs = false; //Provides finer control at lower inputs of joystick by squaring value and reapplying sign
 
   private ADIS16448_IMU imu = new ADIS16448_IMU();
@@ -62,6 +64,8 @@ public class DriveTrain extends Subsystem {
     //rightEnc.reset();
     //leftEnc.reset();
     
+    reversed = false;
+
     //Set the deadband
     setDeadband(0.05);
 
@@ -79,6 +83,14 @@ public class DriveTrain extends Subsystem {
   //Drive the wheels in teleop and auto
   public void driveWheels(double leftSpd, double rightSpd){
     drive.tankDrive(leftSpd, rightSpd, this.squaredInputs);
+  }
+
+  public void setReversed(boolean reversed){
+    this.reversed = reversed;
+  }
+
+  public boolean getReversed(){
+    return reversed;
   }
 
   //Turn in auto
