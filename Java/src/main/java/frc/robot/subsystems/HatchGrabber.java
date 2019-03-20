@@ -7,8 +7,10 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -21,28 +23,29 @@ public class HatchGrabber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private DoubleSolenoid hatchSol = new DoubleSolenoid(1, 3); 
+  private Spark hatchMotor = new Spark(RobotMap.hatchSparkPort);
+  private DigitalInput limitSwitch = new DigitalInput(RobotMap.limitSwitchPort);
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new GrabHatch(false));
+    setDefaultCommand(new GrabHatch(0));
   }
 
   public HatchGrabber(){
-    hatchSol.set(Value.kReverse);
+    hatchMotor.stopMotor();
   }
 
-  public void toggle(){
-    if(hatchSol.get().equals(Value.kForward))
-      hatchSol.set(Value.kReverse);
-    else if(hatchSol.get().equals(Value.kReverse))
-      hatchSol.set(Value.kForward);
+  public void set(double speed){
+    if(!limitSwitch.get() && speed > 0)
+      hatchMotor.stopMotor();
+    else
+      hatchMotor.set(speed);
   }
 
-  public Value getHatch(){
-    return hatchSol.get();
+  public double get(){
+    return hatchMotor.get();
   }
 
   //Provides for one singular operator interface across all files

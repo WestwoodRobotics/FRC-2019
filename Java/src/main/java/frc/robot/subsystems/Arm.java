@@ -16,6 +16,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.AdjustArm;
+import frc.robot.commands.SetArmPos;
+import frc.robot.commands.UpdateArm;
 
 /**
  * Add your docs here.
@@ -29,17 +31,18 @@ public class Arm extends Subsystem {
 
   private boolean powerMode = false;
   
-  private static double kP = 0;
-  private static double kI = 0;
-  private static double kD = 0;
+  //private static double kP = 0;
+  //private static double kI = 0;
+  //private static double kD = 0;
 
   int tolerance = 10;
+
+  private static RobotMap.ArmEnum relativePos;
+  private static double absolutePos = 0;
 
   public Arm(){
     armMotor1.setNeutralMode(NeutralMode.Brake);
     armMotor2.setNeutralMode(NeutralMode.Brake);;
-
-    
 
     powerMode = false;
 
@@ -51,54 +54,74 @@ public class Arm extends Subsystem {
     armMotor2.configReverseSoftLimitEnable(true);
 
     armMotor2.config_kP(0, kP, 0); 
-    armMotor2.config_kI(0, kI, 0); 
+    armMotor2.config_kI(0, kI, 0);
     armMotor2.config_kD(0, kD, 0);
 
     armMotor2.configAllowableClosedloopError(0, tolerance, 0);
 
-    armMotor2.selectProfileSlot(0, 0);
+    armMotor2.selectProfileSlot(0, 0);*/
+
+    armMotor1.set(ControlMode.Follower, RobotMap.armTalon2Port);
     
-    resetEncoder();*/
+    resetEncoder();
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new AdjustArm(RobotMap.Arm.OFF));
+    setDefaultCommand(new UpdateArm());
   }
 
-  /*public void setArm(double position){
-    armMotor1.set(ControlMode.MotionMagic, position);
+  public void setArm(RobotMap.ArmEnum pos){
+    relativePos = pos;
+    if(pos.equals(RobotMap.ArmEnum.TOP)){
+      absolutePos = RobotMap.armTopPos;
+    }
+    else if(pos.equals(RobotMap.ArmEnum.MIDDLE)){
+      absolutePos = RobotMap.armMiddlePos;
+    }
+    else if(pos.equals(RobotMap.ArmEnum.BOTTOM)){
+      absolutePos = RobotMap.armBottomPos;
+    }
+  }
+
+  public void setArm(int increment){
+    absolutePos += increment;
+  }
+
+  public RobotMap.ArmEnum getArm(){
+    return relativePos;
+  }
+
+  public void updateArm(){
+    //armMotor2.set(ControlMode.MotionMagic, absolutePos);
   }
   
-
   public int getEncoder(){
     return armMotor2.getSensorCollection().getQuadraturePosition();
   }
 
-  public static void resetEncoder(){
-    armMotor2.getSensorCollection().setPulseWidthPosition(0, 0);
+  public void resetEncoder(){
+    armMotor2.getSensorCollection().setQuadraturePosition(0, 100);
   }
 
-  public boolean onTarget(int targetPos){
-    double currentPos = getEncoder();
-
-    return Math.abs(currentPos - targetPos) < tolerance;
-  }*/
+  public double getAbsolutePos(){
+    return absolutePos;
+  }
 
   // Power Mode Commands
   public void setArmSpeed(double speed){
-    armMotor1.set(ControlMode.PercentOutput, speed);
     armMotor2.set(ControlMode.PercentOutput, speed);
+    armMotor1.set(ControlMode.PercentOutput, -speed);
   }
 
   public void brakeArm(){
-    if(!powerMode){
+    /*if(!powerMode){
       setArmSpeed(.2);
     }
     else
-      setArmSpeed(-0.1);
+      setArmSpeed(-0.1);*/
   }
 
   public void togglePowerMode(){

@@ -13,13 +13,16 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap.Cargo;
 import frc.robot.RobotMap.LiftMode;
-import frc.robot.RobotMap.Arm;
+import frc.robot.RobotMap.ArmEnum;
+
+import frc.robot.subsystems.Arm;
 
 import frc.robot.commands.AdjustArm;
 import frc.robot.commands.AdjustLift;
 import frc.robot.commands.GrabHatch;
 import frc.robot.commands.MoveCargo;
 import frc.robot.commands.ReverseDrive;
+import frc.robot.commands.SetArmPos;
 import frc.robot.commands.ShiftSlow;
 import frc.robot.commands.ToggleArmMode;
 import frc.robot.commands.TurnToHatch;
@@ -61,8 +64,8 @@ public class OI {
 
   //Ports
   public static final int logitechPort = 0;
-  public static final int rJoyPort = 1;
-  public static final int lJoyPort = 2;
+  public static final int rJoyPort = 2;
+  public static final int lJoyPort = 1;
 
   //Controllers accessing the ports
   Joystick rJoy = new Joystick(rJoyPort);
@@ -74,7 +77,7 @@ public class OI {
   Button rightR = new JoystickButton(rJoy, 4);
   Button rightL = new JoystickButton(rJoy, 3);
   Button rightLower = new JoystickButton(rJoy, 2);
-
+  
   Button leftR = new JoystickButton(lJoy, 4);
   Button leftL = new JoystickButton(lJoy, 3);
   Button leftLower = new JoystickButton(lJoy, 2);
@@ -83,6 +86,10 @@ public class OI {
   Button armRaise = new JoystickButton(lJoy, 12);
 
   Button armPowerRaise = new JoystickButton(lJoy, 11);
+
+  Button armTopPos = new JoystickButton(lJoy, 13);
+  Button armMiddlePos = new JoystickButton(lJoy, 12);
+  Button armBottomPos = new JoystickButton(lJoy, 11);
 
   Button reverse = new JoystickButton(rJoy, 13);
 
@@ -118,8 +125,6 @@ public class OI {
     lJoyTrigger.whenReleased(new ShiftSlow(true));
 
     //First Driver Overrides
-    rightLower.whenPressed(new GrabHatch(true));
-
     rightR.whenPressed(new AdjustLift(LiftMode.TOGGLE_FRONT));
     rightL.whenPressed(new AdjustLift(LiftMode.TOGGLE_BACK));
 
@@ -129,26 +134,26 @@ public class OI {
     leftL.whenPressed(new MoveCargo(Cargo.IN));
     leftL.whenReleased(new MoveCargo(Cargo.OFF));
 
-    armLower.whenPressed(new AdjustArm(Arm.DOWN));
-    armLower.whenReleased(new AdjustArm(Arm.OFF));
+    armTopPos.whenPressed(new SetArmPos(RobotMap.ArmEnum.TOP));
+    armMiddlePos.whenPressed(new SetArmPos(RobotMap.ArmEnum.MIDDLE));
+    armBottomPos.whenPressed(new SetArmPos(RobotMap.ArmEnum.BOTTOM));
 
-    armRaise.whenPressed(new AdjustArm(Arm.UP));
-    armRaise.whenReleased(new AdjustArm(Arm.OFF));
+    /*armLower.whenPressed(new AdjustArm(ArmEnum.DOWN));
+    armLower.whenReleased(new AdjustArm(ArmEnum.OFF));
+
+    armRaise.whenPressed(new AdjustArm(ArmEnum.UP));
+    armRaise.whenReleased(new AdjustArm(ArmEnum.OFF));
 
     armPowerRaise.whenPressed(new ToggleArmMode());
-
+    */
     reverse.whenPressed(new ReverseDrive());
 
     //Second Driver Controls
-    logitechY.whenPressed(new AdjustArm(Arm.UP));
-    logitechY.whenReleased(new AdjustArm(Arm.OFF));
+    logitechY.whenPressed(new SetArmPos(RobotMap.ArmEnum.TOP));
 
-    logitechA.whenPressed(new AdjustArm(Arm.DOWN));
-    logitechA.whenReleased(new AdjustArm(Arm.OFF));
+    logitechA.whenPressed(new SetArmPos(RobotMap.ArmEnum.BOTTOM));
     
-    logitechX.whenPressed(new GrabHatch(true));
-    
-    logitechB.whenPressed(new ToggleArmMode());
+    logitechB.whenPressed(new SetArmPos(RobotMap.ArmEnum.MIDDLE));
 
     logitechRBumper.whenPressed(new AdjustLift(LiftMode.TOGGLE_BACK));
 
@@ -168,6 +173,18 @@ public class OI {
   public double getLogitechLJoyY(){
     return logitech.getRawAxis(1);
     //return -throttle.getRawAxis(2);
+  }
+
+  public int getLPOV(){
+    return lJoy.getPOV();
+  }
+
+  public double getLogitechRJoy(){
+    return logitech.getRawAxis(5);
+  }
+
+  public int getLogitechPOV(){
+    return logitech.getPOV();
   }
 
   /*public double getZRotate(){

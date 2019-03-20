@@ -7,57 +7,81 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.RobotMap;
 import frc.robot.subsystems.Arm;
 
-public class AdjustArm extends Command {
-  public Arm arm = Arm.getInstance();
+public class UpdateArm extends Command {
+  private Arm arm = Arm.getInstance();
 
-  //public RobotMap.ArmEnum v = RobotMap.ArmEnum.OFF;
+  public static final double P = 1,
+                             I = 0,
+                             D = 0,
+                             absoluteTolerance = 10;
 
-  public AdjustArm(RobotMap.ArmEnum v) {
+  private PIDController pid;
+
+  public UpdateArm() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(arm);
 
-    //this.v = v;
+    /*pid = new PIDController(P, I, D, new PIDSource(){
+    
+      PIDSourceType sourceType = PIDSourceType.kDisplacement;
+
+      @Override
+      public void setPIDSourceType(PIDSourceType pidSource) {
+        sourceType = pidSource;
+      }
+    
+      @Override
+      public double pidGet() {
+        return arm.getEncoder();
+      }
+    
+      @Override
+      public PIDSourceType getPIDSourceType() {
+        return sourceType;
+      }
+    }, s -> arm.setArmSpeed(s));
+
+    pid.setInputRange(0, 70000);
+    pid.setOutputRange(-0.5, 0.5);
+    pid.setAbsoluteTolerance(absoluteTolerance);
+    pid.setSetpoint(arm.getAbsolutePos());*/
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    pid.reset();
+    pid.enable();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    /*if(v == RobotMap.ArmEnum.UP){
-      arm.setArmSpeed(.75);
-    }
-    else if(v == RobotMap.ArmEnum.DOWN){
-      if(arm.getPowerMode())
-        arm.setArmSpeed(-.6);
-      else
-        arm.setArmSpeed(-.2);
-      //arm.setArmSpeed(-.3);
-    }
-    else if(v == RobotMap.ArmEnum.OFF){
-      arm.brakeArm();
-    }*/
+    /*if(OI.getInstance().getLogitechPOV() == 0)
+      arm.setArm(1);
+    else if(OI.getInstance().getLogitechPOV() == 180)
+      arm.setArm(-1);
+    */
+    //pid.setSetpoint(arm.getAbsolutePos());
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    arm.brakeArm();
   }
 
   // Called when another command which requires one or more of the same

@@ -96,11 +96,14 @@ public class Robot extends TimedRobot{
 
     SmartDashboard.putString("Back Pistons", (PistonLift.getInstance().getBackSol())?"ON":"OFF");
 
-    SmartDashboard.putString("Hatch Grabber", (HatchGrabber.getInstance().getHatch().equals(Value.kForward))?"OPEN":"CLOSED");
+    SmartDashboard.putNumber("Hatch Grabber", HatchGrabber.getInstance().get());
 
     SmartDashboard.putString("Speed", (DriveTrain.getInstance().getSlow())?"SLOW":"FAST");
     
+    SmartDashboard.putNumber("Encoder", Arm.getInstance().getEncoder());
+
     //SmartDashboard.putString("Reversed?", (DriveTrain.getInstance().getReversed())?"NOT REVERSED":"REVERSED");
+    
   }
 
   /**
@@ -166,7 +169,7 @@ public class Robot extends TimedRobot{
     HatchGrabber.getInstance(); 
     PistonLift.getInstance();
     CargoShooter.getInstance();
-    Arm.getInstance();
+    Arm.getInstance().resetEncoder();
   }
 
   /**

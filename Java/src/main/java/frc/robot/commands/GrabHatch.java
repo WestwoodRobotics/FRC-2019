@@ -7,31 +7,62 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.OI;
 import frc.robot.subsystems.HatchGrabber;
 
 /**
  * Add your docs here.
  */
-public class GrabHatch extends InstantCommand {
+public class GrabHatch extends Command {
   /**
    * Add your docs here.
    */
-  boolean value = false;
+  double speed = 0;
 
-  public GrabHatch(boolean v) {
-    super();
+  HatchGrabber hatch = HatchGrabber.getInstance();
+
+  public GrabHatch(double speed) {
     requires(HatchGrabber.getInstance());
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
 
-    value = v;
+    this.speed = speed;
   }
 
-  // Called once when the command executes
+  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if(value)
-      HatchGrabber.getInstance().toggle();
+    
+  }
+
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+    if(OI.getInstance().getLPOV() == 0 || OI.getInstance().getLogitechRJoy() < -0.25){
+      hatch.set(-.55);
+    }
+    else if(OI.getInstance().getLPOV() == 180 || OI.getInstance().getLogitechRJoy() > 0.25)
+      hatch.set(.3);
+    else
+      hatch.set(0);
+  }
+ 
+  // Make this return true when this Command no longer needs to run execute()
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
+
+  // Called once after isFinished returns true
+  @Override
+  protected void end() {
+  }
+
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
   }
 }

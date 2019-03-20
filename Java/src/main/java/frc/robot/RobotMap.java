@@ -29,9 +29,10 @@ public class RobotMap {
   public static final double driveTimeSpeed = 0.4;
 
   public static final int liftSolBackChan = 0,
-                          hatchGrabberSolPort = 1,
                           liftSolFrontChan = 2;
-                          
+
+  public static final int hatchSparkPort = 0,
+                          limitSwitchPort = 0;
                           
   public static final int leftTalon1Port = 0,
                           leftTalon2Port = 1,
@@ -47,6 +48,10 @@ public class RobotMap {
   public static final int encoderForwardLimit = 82135,  //CHANGE THIS
                           encoderBackwardLimit = 2789;
 
+  public static final double armTopPos = 0,
+                             armMiddlePos = 35624,
+                             armBottomPos = 63266;
+
   public static final int cargoShooterTalonPort = 6;
 
   public enum Cargo{
@@ -61,10 +66,10 @@ public class RobotMap {
     TOGGLE_BACK;
   }
 
-  public enum Arm{
-    UP,
-    DOWN,
-    OFF;
+  public enum ArmEnum{
+    TOP,
+    MIDDLE,
+    BOTTOM;
   }
 
 }
