@@ -8,7 +8,7 @@ import frc.robot.RobotMap;
 
 public class HatchVision {
   private HatchPipeline pipeline;
-  private String cName = "USB Camera " + RobotMap.armCameraPort;
+  private String cName = "USB Camera " + RobotMap.P_ARM_CAM;
   private Mat hatchImg;
 
   public HatchVision() {

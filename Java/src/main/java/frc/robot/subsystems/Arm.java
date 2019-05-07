@@ -8,13 +8,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.AdjustArm;
@@ -26,28 +22,28 @@ public class Arm extends PIDSubsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private static WPI_TalonSRX armMotor1 = new WPI_TalonSRX(RobotMap.armTalon1Port),
-                       armMotor2 = new WPI_TalonSRX(RobotMap.armTalon2Port);
+  private static WPI_TalonSRX armMotor1 = new WPI_TalonSRX(RobotMap.P_ARM_TALON_1),
+                       armMotor2 = new WPI_TalonSRX(RobotMap.P_ARM_TALON_2);
 
-  private static double angle = getInstance().getPosition()*(-2*Math.PI/RobotMap.ticksPerRevolution);
+  private static double angle = getInstance().getPosition()*(-2*Math.PI/RobotMap.C_TICKS_PER_REV);
 
   private static double P = 0,
                         I = 0,
                         D = 0,
-                        F = RobotMap.horizontalVoltage * Math.cos(angle);
+                        F = RobotMap.C_HORIZONTAL_VOLTAGE * Math.cos(angle);
 
   private static double outputVal = 0;
 
   public Arm(){
     super(P, I, D, F);
 
-    armMotor1.set(ControlMode.Follower, RobotMap.armTalon2Port);
+    armMotor1.set(ControlMode.Follower, RobotMap.P_ARM_TALON_2);
     armMotor2.set(ControlMode.PercentOutput, 0);
 
     this.resetEncoder();
     this.getPIDController().setContinuous(false);
 
-    setPercentTolerance(.1);
+    setPercentTolerance(.12);
     setOutputRange(-0.35, 0.15);
 
     P = SmartDashboard.getNumber("P", 0);
@@ -87,7 +83,7 @@ public class Arm extends PIDSubsystem {
   }
 
   public double getAngle(){
-    angle = getInstance().getPosition()*(-2.0*Math.PI/RobotMap.ticksPerRevolution);
+    angle = getInstance().getPosition()*(-2.0*Math.PI/RobotMap.C_TICKS_PER_REV);
     return angle;
   }
 
@@ -95,7 +91,7 @@ public class Arm extends PIDSubsystem {
     P = SmartDashboard.getNumber("P", 0);
     I = SmartDashboard.getNumber("I", 0);
     D = SmartDashboard.getNumber("D", 0);
-    F = RobotMap.horizontalVoltage * Math.cos(getAngle());
+    F = RobotMap.C_HORIZONTAL_VOLTAGE * Math.cos(getAngle());
 
     this.getPIDController().setP(this.P);
     this.getPIDController().setI(this.I);

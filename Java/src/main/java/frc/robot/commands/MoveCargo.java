@@ -14,10 +14,10 @@ import frc.robot.subsystems.CargoShooter;
 
 public class MoveCargo extends Command {
   
-  RobotMap.Cargo c = RobotMap.Cargo.OFF;
+  RobotMap.E_CARGO_MOTION c = RobotMap.E_CARGO_MOTION.OFF;
   CargoShooter cs = CargoShooter.getInstance();
 
-  public MoveCargo(RobotMap.Cargo c) {
+  public MoveCargo(RobotMap.E_CARGO_MOTION c) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(cs);
@@ -32,10 +32,10 @@ public class MoveCargo extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(c == RobotMap.Cargo.IN || OI.getInstance().getLogitechLJoyY() < -0.2){
+    if(c == RobotMap.E_CARGO_MOTION.IN || OI.getInstance().getLogitechLJoyY() < -0.2){
       cs.pullBall();
     }
-    else if(c == RobotMap.Cargo.OUT || OI.getInstance().getLogitechLJoyY() > 0.2){
+    else if(c == RobotMap.E_CARGO_MOTION.OUT || OI.getInstance().getLogitechLJoyY() > 0.2){
       cs.pushBall();
     }
     else{

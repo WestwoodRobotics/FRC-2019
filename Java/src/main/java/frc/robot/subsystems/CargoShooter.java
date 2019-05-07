@@ -20,13 +20,13 @@ public class CargoShooter extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private WPI_TalonSRX shootMotor = new WPI_TalonSRX(RobotMap.cargoShooterTalonPort);
+  private WPI_TalonSRX shootMotor = new WPI_TalonSRX(RobotMap.P_CARGO_SHOOTER_TALON);
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new MoveCargo(RobotMap.Cargo.OFF));
+    setDefaultCommand(new MoveCargo(RobotMap.E_CARGO_MOTION.OFF));
   }
 
   public void pullBall(){

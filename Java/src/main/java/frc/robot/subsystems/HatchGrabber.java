@@ -23,8 +23,8 @@ public class HatchGrabber extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private Spark hatchMotor = new Spark(RobotMap.hatchSparkPort);
-  private DigitalInput limitSwitch = new DigitalInput(RobotMap.limitSwitchPort);
+  private Spark hatchMotor = new Spark(RobotMap.P_HATCH_GRAB_SPARK);
+  private DigitalInput limitSwitch = new DigitalInput(RobotMap.P_HATCH_GRAB_LIMSWITCH);
 
   boolean powerMode = true;
 

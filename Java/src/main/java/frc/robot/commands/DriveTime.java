@@ -33,7 +33,7 @@ public class DriveTime extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    dt_s.driveWheels(RobotMap.driveTimeSpeed, RobotMap.driveTimeSpeed);
+    dt_s.driveWheels(RobotMap.C_DRIVE_TIME_SPEED, RobotMap.C_DRIVE_TIME_SPEED);
   }
 
   // Make this return true when this Command no longer needs to run execute()

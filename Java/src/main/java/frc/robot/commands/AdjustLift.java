@@ -20,9 +20,9 @@ public class AdjustLift extends InstantCommand {
    */
   public PistonLift pl = PistonLift.getInstance();
 
-  private RobotMap.LiftMode mode;
+  private RobotMap.E_LIFT_MODE mode;
 
-  public AdjustLift(RobotMap.LiftMode mode) {
+  public AdjustLift(RobotMap.E_LIFT_MODE mode) {
     super();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -34,10 +34,10 @@ public class AdjustLift extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    if(mode.equals(RobotMap.LiftMode.TOGGLE_FRONT)){
+    if(mode.equals(RobotMap.E_LIFT_MODE.TOGGLE_FRONT)){
       pl.toggleFrontSol();
     }
-    else if(mode.equals(RobotMap.LiftMode.TOGGLE_BACK)){
+    else if(mode.equals(RobotMap.E_LIFT_MODE.TOGGLE_BACK)){
       pl.toggleBackSol();
     }
   }

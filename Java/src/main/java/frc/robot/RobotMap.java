@@ -24,52 +24,47 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
-  public static final double deadbandLimit = 0.499; 
+  public static final double C_DRIVE_TIME_SPEED = 0.4;
 
-  public static final double driveTimeSpeed = 0.4;
+  public static final int P_LIFT_BACK_SOL = 0,
+                          P_LIFT_FRONT_SOL = 2;
 
-  public static final int liftSolBackChan = 0,
-                          liftSolFrontChan = 2;
-
-  public static final int hatchSparkPort = 0,
-                          limitSwitchPort = 0;
+  public static final int P_HATCH_GRAB_SPARK = 0,
+                          P_HATCH_GRAB_LIMSWITCH = 0;
                           
-  public static final int leftTalon1Port = 0,
-                          leftTalon2Port = 1,
-                          rightTalon1Port = 2,
-                          rightTalon2Port = 3;
+  public static final int P_DRIVE_LEFT_TALON_1 = 0,
+                          P_DRIVE_LEFT_TALON_2 = 1,
+                          P_DRIVE_RIGHT_TALON_1 = 2,
+                          P_DRIVE_RIGHT_TALON_2 = 3;
 
-  public static final int armCameraPort = 0,
-                          chassisCameraPort = 1;
+  public static final int P_ARM_CAM = 0,
+                          P_DRIVE_CAM = 1;
                           
-  public static final int armTalon1Port = 4,
-                          armTalon2Port = 5;
+  public static final int P_ARM_TALON_1 = 4,
+                          P_ARM_TALON_2 = 5;
 
-  public static final int encoderForwardLimit = -1,  //CHANGE THIS
-                          encoderBackwardLimit = -1,
-                          ticksPerRevolution = 4096 * 45;
-                          
-  public static final double horizontalVoltage = 0.3;
+  public static final int C_TICKS_PER_REV = 4096 * 45;
+  public static final double C_HORIZONTAL_VOLTAGE = 0.3;
 
-  public static final double armTopPos = 0,
-                             armMiddlePos = 35624,
-                             armBottomPos = 63266;
+  public static final double C_ARM_TOP_POS = 0,  //CHANGE THIS
+                             C_ARM_MID_POS = 0,
+                             C_ARM_BOTTOM_POS = 0;
 
-  public static final int cargoShooterTalonPort = 6;
+  public static final int P_CARGO_SHOOTER_TALON = 6;
 
-  public enum Cargo{
+  public enum E_CARGO_MOTION{
     OFF,
     OUT,
     IN;
   }
 
-  public enum LiftMode{
+  public enum E_LIFT_MODE{
     OFF,
     TOGGLE_FRONT,
     TOGGLE_BACK;
   }
 
-  public enum ArmEnum{
+  public enum E_ARM_POS{
     TOP,
     MIDDLE,
     BOTTOM;

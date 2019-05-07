@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.AdjustLift;
 
@@ -20,14 +19,14 @@ public class PistonLift extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private Solenoid solFront = new Solenoid(RobotMap.liftSolFrontChan);
-  private Solenoid solBack = new Solenoid(RobotMap.liftSolBackChan);
+  private Solenoid solFront = new Solenoid(RobotMap.P_LIFT_FRONT_SOL);
+  private Solenoid solBack = new Solenoid(RobotMap.P_LIFT_BACK_SOL);
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new AdjustLift(RobotMap.LiftMode.OFF));
+    setDefaultCommand(new AdjustLift(RobotMap.E_LIFT_MODE.OFF));
   }
 
   public PistonLift(){

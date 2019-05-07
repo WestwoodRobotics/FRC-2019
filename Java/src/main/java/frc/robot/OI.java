@@ -10,20 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotMap.Cargo;
-import frc.robot.RobotMap.LiftMode;
-import frc.robot.RobotMap.ArmEnum;
-
-import frc.robot.subsystems.Arm;
-
+import frc.robot.RobotMap.E_CARGO_MOTION;
+import frc.robot.RobotMap.E_LIFT_MODE;
 import frc.robot.commands.AdjustLift;
-import frc.robot.commands.GrabHatch;
 import frc.robot.commands.MoveCargo;
 import frc.robot.commands.ReverseDrive;
 import frc.robot.commands.ShiftSlow;
-import frc.robot.commands.TurnToHatch;
-import frc.robot.subsystems.DriveTrain;
 
 
 /**
@@ -111,21 +103,21 @@ public class OI {
     lJoyTrigger.whenReleased(new ShiftSlow(true));
 
     //First Driver Overrides
-    rightR.whenPressed(new AdjustLift(LiftMode.TOGGLE_FRONT));
-    rightL.whenPressed(new AdjustLift(LiftMode.TOGGLE_BACK));
+    rightR.whenPressed(new AdjustLift(E_LIFT_MODE.TOGGLE_FRONT));
+    rightL.whenPressed(new AdjustLift(E_LIFT_MODE.TOGGLE_BACK));
 
-    leftR.whenPressed(new MoveCargo(Cargo.OUT));
-    leftR.whenReleased(new MoveCargo(Cargo.OFF));
+    leftR.whenPressed(new MoveCargo(E_CARGO_MOTION.OUT));
+    leftR.whenReleased(new MoveCargo(E_CARGO_MOTION.OFF));
     
-    leftL.whenPressed(new MoveCargo(Cargo.IN));
-    leftL.whenReleased(new MoveCargo(Cargo.OFF));
+    leftL.whenPressed(new MoveCargo(E_CARGO_MOTION.IN));
+    leftL.whenReleased(new MoveCargo(E_CARGO_MOTION.OFF));
 
     leftLower.whenPressed(new ReverseDrive());
 
     //Second Driver Controls
-    logitechRBumper.whenPressed(new AdjustLift(LiftMode.TOGGLE_BACK));
+    logitechRBumper.whenPressed(new AdjustLift(E_LIFT_MODE.TOGGLE_BACK));
 
-    logitechLBumper.whenPressed(new AdjustLift(LiftMode.TOGGLE_FRONT));
+    logitechLBumper.whenPressed(new AdjustLift(E_LIFT_MODE.TOGGLE_FRONT));
   }
 
   public double getLJoyY(){

@@ -30,11 +30,11 @@ public class DriveTrain extends Subsystem {
 
   private boolean slowMode = false;
 
-  private WPI_TalonSRX leftMaster = new WPI_TalonSRX(RobotMap.leftTalon1Port),
-                        rightMaster = new WPI_TalonSRX(RobotMap.rightTalon1Port);
+  private WPI_TalonSRX leftMaster = new WPI_TalonSRX(RobotMap.P_DRIVE_LEFT_TALON_1),
+                        rightMaster = new WPI_TalonSRX(RobotMap.P_DRIVE_RIGHT_TALON_1);
 
-  private WPI_TalonSRX left2 = new WPI_TalonSRX(RobotMap.leftTalon2Port),
-                        right2 = new WPI_TalonSRX(RobotMap.rightTalon2Port);
+  private WPI_TalonSRX left2 = new WPI_TalonSRX(RobotMap.P_DRIVE_LEFT_TALON_2),
+                        right2 = new WPI_TalonSRX(RobotMap.P_DRIVE_RIGHT_TALON_2);
 
   private DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
 
@@ -49,8 +49,8 @@ public class DriveTrain extends Subsystem {
 
   public DriveTrain(){
     //Sets the second motor for both the left and right side to follow the first motor
-    left2.set(ControlMode.Follower, RobotMap.leftTalon1Port);
-    right2.set(ControlMode.Follower, RobotMap.rightTalon1Port);
+    left2.set(ControlMode.Follower, RobotMap.P_DRIVE_LEFT_TALON_1);
+    right2.set(ControlMode.Follower, RobotMap.P_DRIVE_RIGHT_TALON_1);
 
     //Adds a ramp up (acceleration) for the left side
     leftMaster.configOpenloopRamp(ramp, 25);
