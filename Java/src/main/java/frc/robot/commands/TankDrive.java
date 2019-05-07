@@ -37,25 +37,27 @@ public class TankDrive extends Command {
     double lJoyVal = OI.getInstance().getLJoyY();
     double rJoyVal = OI.getInstance().getRJoyY();
 
-    
-
-    if(dt_s.getSlow()){
-      leftSpd = lJoyVal/.5;
-      rightSpd = rJoyVal/.5;
+    if(!dt_s.getSlow()){
+      leftSpd = lJoyVal/2;
+      rightSpd = rJoyVal/2;
       //leftSpd = Math.round(lJoyVal);
       //rightSpd = Math.round(rJoyVal);
     }
-    else if(!dt_s.getSlow()){
+    else if(dt_s.getSlow()){
       leftSpd = lJoyVal;
       rightSpd = rJoyVal;
       //leftSpd = Math.round(lJoyVal)*.5;
       //rightSpd = Math.round(rJoyVal)*.5;
     }
 
-    /*if(dt_s.getReversed()){
-      leftSpd *= -1;      
+    if(dt_s.getReversed()){
+      double temp = leftSpd;
+      leftSpd = rightSpd;
+      rightSpd = temp;
+      
+      leftSpd *= -1;     
       rightSpd *= -1;
-    }*/
+    }
     
     dt_s.driveWheels(leftSpd, rightSpd);
   }

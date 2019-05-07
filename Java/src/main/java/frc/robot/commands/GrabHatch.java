@@ -23,6 +23,8 @@ public class GrabHatch extends Command {
 
   HatchGrabber hatch = HatchGrabber.getInstance();
 
+  
+
   public GrabHatch(double speed) {
     requires(HatchGrabber.getInstance());
     // Use requires() here to declare subsystem dependencies
@@ -40,12 +42,13 @@ public class GrabHatch extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(OI.getInstance().getLPOV() == 0 || OI.getInstance().getLogitechRJoy() < -0.25){
-      hatch.set(-.55);
+    /*if(OI.getInstance().getLPOV() == 0 || OI.getInstance().getLogitechRJoyY() < -0.25){
+      hatch.set(-.275);
     }
-    else if(OI.getInstance().getLPOV() == 180 || OI.getInstance().getLogitechRJoy() > 0.25)
-      hatch.set(.3);
-    else
+    else if(OI.getInstance().getLPOV() == 180 || OI.getInstance().getLogitechRJoyY() > 0.25){
+      hatch.set(.275);
+    }
+    else*/
       hatch.set(0);
   }
  

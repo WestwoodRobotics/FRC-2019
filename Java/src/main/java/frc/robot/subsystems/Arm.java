@@ -13,127 +13,133 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.AdjustArm;
-import frc.robot.commands.SetArmPos;
-import frc.robot.commands.UpdateArm;
 
 /**
  * Add your docs here.
  */
-public class Arm extends Subsystem {
+public class Arm extends PIDSubsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
   private static WPI_TalonSRX armMotor1 = new WPI_TalonSRX(RobotMap.armTalon1Port),
                        armMotor2 = new WPI_TalonSRX(RobotMap.armTalon2Port);
 
-  private boolean powerMode = false;
-  
-  //private static double kP = 0;
-  //private static double kI = 0;
-  //private static double kD = 0;
+  private static double angle = getInstance().getPosition()*(-2*Math.PI/RobotMap.ticksPerRevolution);
 
-  int tolerance = 10;
+  private static double P = 0,
+                        I = 0,
+                        D = 0,
+                        F = RobotMap.horizontalVoltage * Math.cos(angle);
 
-  private static RobotMap.ArmEnum relativePos;
-  private static double absolutePos = 0;
+  private static double outputVal = 0;
 
   public Arm(){
-    armMotor1.setNeutralMode(NeutralMode.Brake);
-    armMotor2.setNeutralMode(NeutralMode.Brake);;
-
-    powerMode = false;
-
-    /*armMotor2.configFactoryDefault();
-    
-    armMotor2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-
-    armMotor2.configReverseSoftLimitThreshold(RobotMap.encoderBackwardLimit);
-    armMotor2.configReverseSoftLimitEnable(true);
-
-    armMotor2.config_kP(0, kP, 0); 
-    armMotor2.config_kI(0, kI, 0);
-    armMotor2.config_kD(0, kD, 0);
-
-    armMotor2.configAllowableClosedloopError(0, tolerance, 0);
-
-    armMotor2.selectProfileSlot(0, 0);*/
+    super(P, I, D, F);
 
     armMotor1.set(ControlMode.Follower, RobotMap.armTalon2Port);
-    
-    resetEncoder();
+    armMotor2.set(ControlMode.PercentOutput, 0);
+
+    this.resetEncoder();
+    this.getPIDController().setContinuous(false);
+
+    setPercentTolerance(.1);
+    setOutputRange(-0.35, 0.15);
+
+    P = SmartDashboard.getNumber("P", 0);
+    I = SmartDashboard.getNumber("I", 0);
+    D = SmartDashboard.getNumber("D", 0);
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new UpdateArm());
+    setDefaultCommand(new AdjustArm(-9000));
   }
 
-  public void setArm(RobotMap.ArmEnum pos){
-    relativePos = pos;
-    if(pos.equals(RobotMap.ArmEnum.TOP)){
-      absolutePos = RobotMap.armTopPos;
-    }
-    else if(pos.equals(RobotMap.ArmEnum.MIDDLE)){
-      absolutePos = RobotMap.armMiddlePos;
-    }
-    else if(pos.equals(RobotMap.ArmEnum.BOTTOM)){
-      absolutePos = RobotMap.armBottomPos;
-    }
-  }
-
-  public void setArm(int increment){
-    absolutePos += increment;
-  }
-
-  public RobotMap.ArmEnum getArm(){
-    return relativePos;
-  }
-
-  public void updateArm(){
-    //armMotor2.set(ControlMode.MotionMagic, absolutePos);
+  public void setP(double P){
+    this.P = P;
   }
   
-  public int getEncoder(){
-    return armMotor2.getSensorCollection().getQuadraturePosition();
+  public void setI(double I){
+    this.I = I;
   }
 
-  public void resetEncoder(){
-    armMotor2.getSensorCollection().setQuadraturePosition(0, 100);
+  public void setD(double D){
+    this.D = D;
   }
 
-  public double getAbsolutePos(){
-    return absolutePos;
+  public double getP(){
+    return P;
   }
 
-  // Power Mode Commands
+  public double getI(){
+    return I;
+  }
+
+  public double getD(){
+    return D;
+  }
+
+  public double getAngle(){
+    angle = getInstance().getPosition()*(-2.0*Math.PI/RobotMap.ticksPerRevolution);
+    return angle;
+  }
+
+  public void updatePID(){
+    P = SmartDashboard.getNumber("P", 0);
+    I = SmartDashboard.getNumber("I", 0);
+    D = SmartDashboard.getNumber("D", 0);
+    F = RobotMap.horizontalVoltage * Math.cos(getAngle());
+
+    this.getPIDController().setP(this.P);
+    this.getPIDController().setI(this.I);
+    this.getPIDController().setD(this.D);
+    this.getPIDController().setF(this.F);
+
+    System.out.println(toString());
+  }
+
   public void setArmSpeed(double speed){
-    armMotor2.set(ControlMode.PercentOutput, speed);
-    armMotor1.set(ControlMode.PercentOutput, -speed);
+    armMotor2.pidWrite(speed);
   }
 
   public void brakeArm(){
-    /*if(!powerMode){
-      setArmSpeed(.2);
-    }
-    else
-      setArmSpeed(-0.1);*/
+    armMotor2.set(ControlMode.PercentOutput, 0);
   }
 
-  public void togglePowerMode(){
-    powerMode = !powerMode;
+  protected double returnPIDInput() {
+    return getEncoder();
   }
 
-  public boolean getPowerMode(){
-    return powerMode;
+  protected void usePIDOutput(double output) {
+    output = -output;
+    setArmSpeed(output);
+    this.outputVal = output;
+    System.out.println(output);
   }
 
-  public void setPowerMode(boolean powerMode){
-    this.powerMode = powerMode;
+  public double getEncoder(){
+    return armMotor2.getSelectedSensorPosition();
+  }
+
+  public void resetEncoder(){
+    armMotor2.setSelectedSensorPosition(-52765);
+  }
+
+  public String toString(){
+    return "P: " + this.getPIDController().getP() + 
+    "\nI: " + this.getPIDController().getI() + 
+    "\nD: " + this.getPIDController().getD() +
+    "\nF: " + this.getPIDController().getF() +
+    //"\nArm Output: " + this.outputVal + 
+    "\nPosition: " + this.getPosition();
+
   }
 
   private static Arm instance;

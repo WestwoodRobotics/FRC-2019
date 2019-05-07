@@ -65,13 +65,14 @@ public class DriveTrain extends Subsystem {
     //leftEnc.reset();
     
     reversed = false;
+    slowMode = false;
 
     //Set the deadband
     setDeadband(0.05);
 
     //Calibrate and reset the IMU
-    imu.reset();
-    imu.calibrate();
+    //imu.reset();
+    //imu.calibrate();
   }
 
   //Default command when the drivetrain is created
@@ -82,6 +83,10 @@ public class DriveTrain extends Subsystem {
 
   //Drive the wheels in teleop and auto
   public void driveWheels(double leftSpd, double rightSpd){
+    if(leftSpd > 0)
+      leftSpd *= 0.95;
+    if(rightSpd < 0)
+      rightSpd *= 0.95;
     drive.tankDrive(leftSpd, rightSpd, this.squaredInputs);
   }
 
@@ -145,7 +150,7 @@ public class DriveTrain extends Subsystem {
   */
 
   public void calibrateIMU(){
-    imu.calibrate();
+    //imu.calibrate();
   }
 
   public void resetIMU(){

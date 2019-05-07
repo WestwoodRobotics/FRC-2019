@@ -45,8 +45,11 @@ public class RobotMap {
   public static final int armTalon1Port = 4,
                           armTalon2Port = 5;
 
-  public static final int encoderForwardLimit = 82135,  //CHANGE THIS
-                          encoderBackwardLimit = 2789;
+  public static final int encoderForwardLimit = -1,  //CHANGE THIS
+                          encoderBackwardLimit = -1,
+                          ticksPerRevolution = 4096 * 45;
+                          
+  public static final double horizontalVoltage = 0.3;
 
   public static final double armTopPos = 0,
                              armMiddlePos = 35624,

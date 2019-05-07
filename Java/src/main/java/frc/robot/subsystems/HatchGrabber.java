@@ -26,6 +26,8 @@ public class HatchGrabber extends Subsystem {
   private Spark hatchMotor = new Spark(RobotMap.hatchSparkPort);
   private DigitalInput limitSwitch = new DigitalInput(RobotMap.limitSwitchPort);
 
+  boolean powerMode = true;
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
@@ -35,6 +37,7 @@ public class HatchGrabber extends Subsystem {
 
   public HatchGrabber(){
     hatchMotor.stopMotor();
+    powerMode = false;
   }
 
   public void set(double speed){
@@ -46,6 +49,14 @@ public class HatchGrabber extends Subsystem {
 
   public double get(){
     return hatchMotor.get();
+  }
+
+  public boolean getPowerMode(){
+    return powerMode;
+  }
+
+  public void setPowerMode(boolean p){
+    powerMode = p;
   }
 
   //Provides for one singular operator interface across all files

@@ -36,8 +36,8 @@ import frc.robot.subsystems.vision.HatchVision;
  * project.
  */
 public class Robot extends TimedRobot{
-  Command m_autonomousCommand;
-  //SendableChooser<Command> m_chooser = new SendableChooser<>();
+  Command autonomousCommand;
+  SendableChooser<Command> chooser = new SendableChooser<>();
 
   Compressor comp = new Compressor();
 
@@ -49,19 +49,28 @@ public class Robot extends TimedRobot{
    */
   @Override
   public void robotInit() {
-    //m_chooser.setDefaultOption("Default Auto", new ExampleAuto());
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    //SmartDashboard.putData("Auto mode", m_chooser);
+    chooser.setDefaultOption("Default Auto", new ExampleAuto());
+    chooser.addOption("My Auto", new ExampleAuto());
+    SmartDashboard.putData("Auto mode", chooser);
 
     CameraServer.getInstance().startAutomaticCapture();
     CameraServer.getInstance().startAutomaticCapture();
     
     comp.setClosedLoopControl(true);
 
-    DriveTrain.getInstance()/*.setReversed(false)*/;
+    DriveTrain.getInstance().setSlow(false)/*.setReversed(false)*/;
     HatchVision.getInstance();
     OI.getInstance();
-    Arm.getInstance().setPowerMode(false);
+
+    HatchGrabber.getInstance().setPowerMode(true);
+
+    Arm.getInstance().resetEncoder();
+
+    DriveTrain.getInstance().setReversed(false);
+
+    SmartDashboard.putNumber("P", 0);
+    SmartDashboard.putNumber("I", 0);
+    SmartDashboard.putNumber("D", 0);
   }
 
   /**
@@ -76,11 +85,9 @@ public class Robot extends TimedRobot{
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading()); 
-
-    SmartDashboard.putBoolean("Power Lift", Arm.getInstance().getPowerMode());
+    //SmartDashboard.putNumber("Gyro", DriveTrain.getInstance().getZHeading()); 
     
-    SmartDashboard.putData("Drive", DriveTrain.getInstance().getDrive());
+    /*SmartDashboard.putData("Drive", DriveTrain.getInstance().getDrive());
 
     String ballShootState = "OFF";
     if(CargoShooter.getInstance().getBall() > 0)
@@ -96,14 +103,21 @@ public class Robot extends TimedRobot{
 
     SmartDashboard.putString("Back Pistons", (PistonLift.getInstance().getBackSol())?"ON":"OFF");
 
-    SmartDashboard.putNumber("Hatch Grabber", HatchGrabber.getInstance().get());
+    SmartDashboard.putString("Speed", (!DriveTrain.getInstance().getSlow())?"SLOW":"FAST");
 
-    SmartDashboard.putString("Speed", (DriveTrain.getInstance().getSlow())?"SLOW":"FAST");
+    SmartDashboard.putBoolean("Hatch Hold", (HatchGrabber.getInstance().getPowerMode())?true:false);
     
-    SmartDashboard.putNumber("Encoder", Arm.getInstance().getEncoder());
+    //SmartDashboard.putNumber("Encoder", Arm.getInstance().getEncoder());
 
-    //SmartDashboard.putString("Reversed?", (DriveTrain.getInstance().getReversed())?"NOT REVERSED":"REVERSED");
+    SmartDashboard.putString("Reversed?", (DriveTrain.getInstance().getReversed())?"REVERSED":"NOT REVERSED");
     
+    SmartDashboard.putNumber("P", Arm.getInstance().getP());
+    SmartDashboard.putNumber("I", Arm.getInstance().getI());
+    SmartDashboard.putNumber("D", Arm.getInstance().getD());
+    */
+
+    SmartDashboard.putNumber("Encoder", Arm.getInstance().getPosition());
+    SmartDashboard.putNumber("Angle", Arm.getInstance().getAngle());
   }
 
   /**
@@ -112,7 +126,7 @@ public class Robot extends TimedRobot{
    */
   @Override
   public void disabledInit() {
-    DriveTrain.getInstance().calibrateIMU();
+    //DriveTrain.getInstance().calibrateIMU();
   }
 
   /**
@@ -135,11 +149,11 @@ public class Robot extends TimedRobot{
    */
   @Override
   public void autonomousInit() {
-    //m_autonomousCommand = m_chooser.getSelected();
+    autonomousCommand = chooser.getSelected();
 
-    /*if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }*/
+    if (autonomousCommand != null) {
+      autonomousCommand.start();
+    }
   }
 
   /**
@@ -158,9 +172,9 @@ public class Robot extends TimedRobot{
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    /*if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }*/
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
+    }
 
     // DriveTrain.getInstance().setDeadband(RobotMap.deadbandLimit); //Set deadband on drive controls
 
@@ -170,6 +184,8 @@ public class Robot extends TimedRobot{
     PistonLift.getInstance();
     CargoShooter.getInstance();
     Arm.getInstance().resetEncoder();
+    
+    HatchGrabber.getInstance().setPowerMode(true);
   }
 
   /**
