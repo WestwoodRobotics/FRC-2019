@@ -8,54 +8,46 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.Arm;
 
-public class AdjustArm extends Command {
-  public Arm arm = Arm.getInstance();
+public class SetArm extends Command {
+  
+  Arm s_arm = Arm.getInstance();
+  RobotMap.E_ARM_POS pos;
 
-  double pos = 0;
-
-  public AdjustArm(double pos) {
+  public SetArm(RobotMap.E_ARM_POS pos) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(arm);
     this.pos = pos;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    /*arm.setP(SmartDashboard.getNumber("P", arm.getP()));
-    arm.setI(SmartDashboard.getNumber("I", arm.getI()));
-    arm.setD(SmartDashboard.getNumber("D", arm.getD()));*/
-
-    arm.setPercentTolerance(0.01);
-    arm.setSetpoint(pos);
-    arm.enable();
+    s_arm.setPos(pos);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    arm.updatePID();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    arm.disable();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    arm.disable();
   }
 }

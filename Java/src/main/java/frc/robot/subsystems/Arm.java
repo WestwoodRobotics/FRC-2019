@@ -13,7 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.commands.AdjustArm;
+import frc.robot.commands.UpdateArm;
 
 /**
  * Add your docs here.
@@ -26,6 +26,8 @@ public class Arm extends PIDSubsystem {
                        armMotor2 = new WPI_TalonSRX(RobotMap.P_ARM_TALON_2);
 
   private static double angle = getInstance().getPosition()*(-2*Math.PI/RobotMap.C_TICKS_PER_REV);
+
+  private static RobotMap.E_ARM_POS pos = RobotMap.E_ARM_POS.TOP;
 
   private static double P = 0,
                         I = 0,
@@ -40,10 +42,10 @@ public class Arm extends PIDSubsystem {
     armMotor1.set(ControlMode.Follower, RobotMap.P_ARM_TALON_2);
     armMotor2.set(ControlMode.PercentOutput, 0);
 
-    this.resetEncoder();
+    this.resetEncoder(RobotMap.C_ARM_TOP_POS);
     this.getPIDController().setContinuous(false);
 
-    setPercentTolerance(.12);
+    setPercentTolerance(RobotMap.C_ARM_PERCENT_TOLERANCE);
     setOutputRange(-0.35, 0.15);
 
     P = SmartDashboard.getNumber("P", 0);
@@ -55,7 +57,7 @@ public class Arm extends PIDSubsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new AdjustArm(-9000));
+    setDefaultCommand(new UpdateArm());
   }
 
   public void setP(double P){
@@ -98,9 +100,32 @@ public class Arm extends PIDSubsystem {
     this.getPIDController().setD(this.D);
     this.getPIDController().setF(this.F);
 
-    System.out.println(toString());
+    //System.out.println(toString());
   }
 
+  public void setPos(RobotMap.E_ARM_POS pos){
+    int actualPos;
+    switch(pos){
+      case TOP:
+        actualPos = RobotMap.C_ARM_TOP_POS;
+        break;
+      case ROCKET:
+        actualPos = RobotMap.C_ARM_ROCKET_POS;
+        break;
+      case SHIP:
+        actualPos = RobotMap.C_ARM_SHIP_POS;
+        break;
+      case BOTTOM:
+        actualPos = RobotMap.C_ARM_BOTTOM_POS;
+        break;
+      default:
+        actualPos = RobotMap.C_ARM_ROCKET_POS;
+    }
+
+    this.setSetpoint(actualPos);
+    SmartDashboard.putNumber("Setpoint", this.getSetpoint());
+  }
+    
   public void setArmSpeed(double speed){
     armMotor2.pidWrite(speed);
   }
@@ -117,15 +142,23 @@ public class Arm extends PIDSubsystem {
     output = -output;
     setArmSpeed(output);
     this.outputVal = output;
-    System.out.println(output);
+    //System.out.println(output);
+  }
+
+  public double getCurrOutput(){
+    return outputVal;
   }
 
   public double getEncoder(){
     return armMotor2.getSelectedSensorPosition();
   }
 
-  public void resetEncoder(){
-    armMotor2.setSelectedSensorPosition(-52765);
+  public RobotMap.E_ARM_POS getEnumPos(){
+    return this.pos;
+  }
+
+  public void resetEncoder(int resetPos){
+    armMotor2.setSelectedSensorPosition(resetPos);
   }
 
   public String toString(){
@@ -135,7 +168,6 @@ public class Arm extends PIDSubsystem {
     "\nF: " + this.getPIDController().getF() +
     //"\nArm Output: " + this.outputVal + 
     "\nPosition: " + this.getPosition();
-
   }
 
   private static Arm instance;

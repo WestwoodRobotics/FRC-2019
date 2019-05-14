@@ -45,10 +45,12 @@ public class RobotMap {
 
   public static final int C_TICKS_PER_REV = 4096 * 45;
   public static final double C_HORIZONTAL_VOLTAGE = 0.3;
+  public static final double C_ARM_PERCENT_TOLERANCE = 0.15;
 
-  public static final double C_ARM_TOP_POS = 0,  //CHANGE THIS
-                             C_ARM_MID_POS = 0,
-                             C_ARM_BOTTOM_POS = 0;
+  public static final int C_ARM_TOP_POS = -52765,  //CHANGE THIS
+                          C_ARM_ROCKET_POS = -6994,
+                          C_ARM_SHIP_POS = -48095,
+                          C_ARM_BOTTOM_POS = 9074;
 
   public static final int P_CARGO_SHOOTER_TALON = 6;
 
@@ -66,7 +68,8 @@ public class RobotMap {
 
   public enum E_ARM_POS{
     TOP,
-    MIDDLE,
+    ROCKET,
+    SHIP,
     BOTTOM;
   }
 

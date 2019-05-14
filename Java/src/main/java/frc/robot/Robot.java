@@ -58,7 +58,7 @@ public class Robot extends TimedRobot{
 
     HatchGrabber.getInstance().setPowerMode(true);
 
-    Arm.getInstance().resetEncoder();
+    Arm.getInstance().resetEncoder(RobotMap.C_ARM_TOP_POS);
 
     DriveTrain.getInstance().setReversed(false);
 
@@ -177,7 +177,7 @@ public class Robot extends TimedRobot{
     HatchGrabber.getInstance(); 
     PistonLift.getInstance();
     CargoShooter.getInstance();
-    Arm.getInstance().resetEncoder();
+    Arm.getInstance().resetEncoder(RobotMap.C_ARM_TOP_POS);
     
     HatchGrabber.getInstance().setPowerMode(true);
   }
