@@ -43,6 +43,11 @@ public class RobotMap {
   public static final int P_ARM_TALON_1 = 4,
                           P_ARM_TALON_2 = 5;
 
+
+  public static final int P_OI_LOGITECH = 3,
+                          P_OI_JOY_RIGHT = 0,
+                          P_OI_JOY_LEFT = 1;
+                        
   public static final int C_TICKS_PER_REV = 4096 * 45;
   public static final double C_HORIZONTAL_VOLTAGE = 0.3;
   public static final double C_ARM_PERCENT_TOLERANCE = 0.15;
