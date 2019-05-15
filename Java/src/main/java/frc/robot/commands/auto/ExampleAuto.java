@@ -32,14 +32,6 @@ public class ExampleAuto extends CommandGroup {
     // e.g. if Command1 requires chassis, and Command2 requires arm,
     // a CommandGroup containing them would require both the chassis and the
     // arm.
-    
-    addSequential(new SetArm(RobotMap.E_ARM_POS.SHIP));
-    setTimeout(5);
-    if(isTimedOut())
-      addSequential(new SetArm(RobotMap.E_ARM_POS.ROCKET));
-    setTimeout(5);
-    if(isTimedOut())
-      addSequential(new SetArm(RobotMap.E_ARM_POS.TOP));
-      
+    addSequential(new TurnTo(45));
   }
 }

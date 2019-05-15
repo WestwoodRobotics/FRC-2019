@@ -25,21 +25,22 @@ public class UpdateArm extends Command {
   @Override
   protected void initialize() {
     s_arm.setPercentTolerance(RobotMap.C_ARM_PERCENT_TOLERANCE);
-    s_arm.enable();
+    //s_arm.enable();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    s_arm.updatePID();
+    /*s_arm.updatePID();
     if(s_arm.onTarget()){
       s_arm.setArmSpeed(s_arm.getCurrOutput());
       s_arm.disable();
       s_arm.resetEncoder((int)s_arm.getSetpoint());
     }
     else{
-      s_arm.enable();
-    }
+      //s_arm.enable();
+    }*/
+    s_arm.setArmSpeed(0.15);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -50,7 +50,7 @@ public class RobotMap {
                         
   public static final int C_TICKS_PER_REV = 4096 * 45;
   public static final double C_HORIZONTAL_VOLTAGE = 0.3;
-  public static final double C_ARM_PERCENT_TOLERANCE = 0.15;
+  public static final double C_ARM_PERCENT_TOLERANCE = 0.1;
 
   public static final int C_ARM_TOP_POS = -52765,  //CHANGE THIS
                           C_ARM_ROCKET_POS = -6994,

@@ -16,51 +16,22 @@ import frc.robot.subsystems.DriveTrain;
 
 public class TurnTo extends Command {
   
-  public DriveTrain dt_s = DriveTrain.getInstance();
-  
-  private PIDController pid;
+  public DriveTrain s_dt = DriveTrain.getInstance();
 
-  private static double P = 0,
-                        I = 0,
-                        D = 0;
+  double degrees;
 
   public TurnTo(double degrees){
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(dt_s);
-
-    pid = new PIDController(P, I, D, new PIDSource(){
-      PIDSourceType source= PIDSourceType.kDisplacement;
-      
-      @Override
-      public double pidGet(){
-        return dt_s.getZHeading();
-      }
-
-      @Override
-      public void setPIDSourceType(PIDSourceType pidSource) {
-        source = pidSource;
-      }
-
-      @Override
-      public PIDSourceType getPIDSourceType() {
-        return source;
-      }
-
-    }, d -> dt_s.turnRate(d));
-
-    pid.setInputRange(-720, 720);
-    pid.setOutputRange(-0.5, 0.5);
-    pid.setPercentTolerance(.1);
-    pid.setSetpoint(degrees);
+    requires(s_dt);
+    this.degrees = degrees;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    dt_s.resetIMU();
-    pid.reset();
-    pid.enable();
+    s_dt.resetIMU();
+    s_dt.turnSetpoint(degrees);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -72,21 +43,21 @@ public class TurnTo extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return pid.onTarget();
+    return s_dt.turnOnTarget();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    pid.disable();
-    dt_s.stopWheels();
+    s_dt.turnDisable();
+    s_dt.stopWheels();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    pid.disable();
-    dt_s.stopWheels();
+    s_dt.turnDisable();
+    s_dt.stopWheels();
   }
 }

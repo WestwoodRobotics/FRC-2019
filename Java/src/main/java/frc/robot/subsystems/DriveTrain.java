@@ -7,16 +7,20 @@
 
 package frc.robot.subsystems;
 
-//import com.ctre.phoenix.motorcontrol.ControlMode;
-//import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.*;
-
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
+
+//import com.ctre.phoenix.motorcontrol.ControlMode;
+//import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.TankDrive;
 
@@ -47,6 +51,12 @@ public class DriveTrain extends Subsystem {
 
   private ADIS16448_IMU imu = new ADIS16448_IMU();
 
+  private double turnP = 0,
+                 turnI = 0,
+                 turnD = 0;
+
+  private PIDController turnPID;
+
   public DriveTrain(){
     //Sets the second motor for both the left and right side to follow the first motor
     left2.set(ControlMode.Follower, RobotMap.P_DRIVE_LEFT_TALON_1);
@@ -70,8 +80,32 @@ public class DriveTrain extends Subsystem {
     //Set the deadband
     setDeadband(0.05);
 
+    turnPID = new PIDController(turnP, turnI, turnD, new PIDSource(){
+      PIDSourceType sourceType = PIDSourceType.kDisplacement;
+      
+      @Override
+      public double pidGet(){
+        return getZHeading();
+      }
+
+      @Override
+      public void setPIDSourceType(PIDSourceType pidSource){
+        sourceType = pidSource;
+      }
+
+      @Override
+      public PIDSourceType getPIDSourceType(){
+        return sourceType;
+      }
+
+    }, d -> this.turnRate(d));
+    
+    turnPID.setInputRange(-720, 720);
+    turnPID.setOutputRange(-0.5, 0.5);
+    turnPID.setAbsoluteTolerance(0.1);
+
     //Calibrate and reset the IMU
-    //imu.reset();
+    imu.reset();
     //imu.calibrate();
   }
 
@@ -88,6 +122,25 @@ public class DriveTrain extends Subsystem {
     if(rightSpd < 0)
       rightSpd *= 0.95;
     drive.tankDrive(leftSpd, rightSpd, this.squaredInputs);
+  }
+
+  public void turnSetpoint(double degrees){
+    turnPID.reset();
+    turnPID.setSetpoint(degrees);
+    turnPID.enable();
+  }
+
+  public boolean turnOnTarget(){
+    turnP = SmartDashboard.getNumber("P", 0);
+    turnI = SmartDashboard.getNumber("I", 0);
+    turnD = SmartDashboard.getNumber("D", 0);
+
+    turnPID.setPID(turnP, turnI, turnD);
+    return turnPID.onTarget();
+  }
+
+  public void turnDisable(){
+    turnPID.disable();
   }
 
   public void setReversed(boolean reversed){
@@ -150,7 +203,7 @@ public class DriveTrain extends Subsystem {
   */
 
   public void calibrateIMU(){
-    //imu.calibrate();
+    imu.calibrate();
   }
 
   public void resetIMU(){
@@ -158,8 +211,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getAngle(){
-    //return gyro.getAngle();
-    return 0;
+    return imu.getAngle();
   }
 
   public double getXHeading() {

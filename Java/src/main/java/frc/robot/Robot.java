@@ -110,8 +110,11 @@ public class Robot extends TimedRobot{
     SmartDashboard.putNumber("D", Arm.getInstance().getD());
     */
 
-    SmartDashboard.putNumber("Encoder", Arm.getInstance().getPosition());
-    SmartDashboard.putNumber("Angle", Arm.getInstance().getAngle());
+    //SmartDashboard.putNumber("Encoder", Arm.getInstance().getPosition());
+    //SmartDashboard.putNumber("Angle", Arm.getInstance().getAngle());
+
+    SmartDashboard.putNumber("Angle", DriveTrain.getInstance().getZHeading());
+    //Arm.getInstance().setArmSpeed(.25);
   }
 
   /**
@@ -144,6 +147,8 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousInit() {
     autonomousCommand = chooser.getSelected();
+
+    DriveTrain.getInstance().resetIMU();
 
     if (autonomousCommand != null) {
       autonomousCommand.start();

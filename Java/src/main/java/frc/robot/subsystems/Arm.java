@@ -29,9 +29,9 @@ public class Arm extends PIDSubsystem {
 
   private static RobotMap.E_ARM_POS pos = RobotMap.E_ARM_POS.TOP;
 
-  private static double P = 0,
+  private static double P = 0.002,
                         I = 0,
-                        D = 0,
+                        D = 0.4,
                         F = RobotMap.C_HORIZONTAL_VOLTAGE * Math.cos(angle);
 
   private static double outputVal = 0;
@@ -46,11 +46,7 @@ public class Arm extends PIDSubsystem {
     this.getPIDController().setContinuous(false);
 
     setPercentTolerance(RobotMap.C_ARM_PERCENT_TOLERANCE);
-    setOutputRange(-0.35, 0.15);
-
-    P = SmartDashboard.getNumber("P", 0);
-    I = SmartDashboard.getNumber("I", 0);
-    D = SmartDashboard.getNumber("D", 0);
+    setOutputRange(-0.38, 0.18);
   }
 
   @Override
@@ -89,15 +85,8 @@ public class Arm extends PIDSubsystem {
     return angle;
   }
 
-  public void updatePID(){
-    P = SmartDashboard.getNumber("P", 0);
-    I = SmartDashboard.getNumber("I", 0);
-    D = SmartDashboard.getNumber("D", 0);
+  public void updateFeedForward(){
     F = RobotMap.C_HORIZONTAL_VOLTAGE * Math.cos(getAngle());
-
-    this.getPIDController().setP(this.P);
-    this.getPIDController().setI(this.I);
-    this.getPIDController().setD(this.D);
     this.getPIDController().setF(this.F);
 
     //System.out.println(toString());
